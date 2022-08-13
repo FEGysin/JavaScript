@@ -1,6 +1,0 @@
-@keyframes neon_glow {
-  50% {
-    box-shadow: 0px 0px 3px 4px cyan;
-    filter: grayscale(0%);
-  }
-}
