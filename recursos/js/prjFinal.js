@@ -1,37 +1,53 @@
 class Caucion {
   constructor(fecha, dias, mContado, tasa, cuota) {
     (this.fecha = fecha),
-      (this.dias = dias),
-      (this.mContado = mContado),
-      (this.tasa = tasa),
-      (this.interes = 0),
-      (this.mFuturo = 0),
-      (this.gastos = 0),
-      (this.iva = 0),
-      (this.cuota = cuota);
+      (this.dias = parseInt(dias)),
+      (this.mContado = parseFloat(mContado)),
+      (this.tasa = parseFloat(tasa)),
+      (this.interes = parseFloat(0)),
+      (this.mFuturo = parseFloat(0)),
+      (this.gastos = parseFloat(0)),
+      (this.iva = parseFloat(0)),
+      (this.cuota = parseFloat(cuota)),
+      (this.metodo = "CA");
   }
 
   calculoInteres() {
-    this.interes = (
-      (this.mContado * this.tasa * this.dias) /
-      (100 * 360)
-    ).toFixed(2);
+    let monto = 0,
+      tasa = 0,
+      dias = 0,
+      intCau = 0;
+    monto = parseFloat(this.mContado);
+    tasa = parseFloat(this.tasa);
+    dias = parseFloat(this.dias);
+    intCau = ((monto * tasa * dias) / (100 * 360)).toFixed(2);
+    this.interes = intCau;
   }
   calculoArancel(tasa, factor) {
-    let calAra = (
-      (this.mContado + this.interes) *
+    let calAra = 0;
+    calAra = (
+      (parseFloat(this.mContado) + parseFloat(this.interes)) *
       ((tasa / 100 / factor) * this.dias)
     ).toFixed(2);
-    this.gastos += calAra;
+    this.gastos += parseFloat(calAra);
   }
   calculoIVA() {
-    this.iva = this.gastos * 0.21;
+    this.iva = (this.gastos * 0.21).toFixed(2);
   }
   actumFuturo() {
+    let mCdo = 0,
+      int = 0,
+      gtos = 0,
+      iva = 0;
+    mCdo = this.mContado;
+    int = this.interes;
+    gtos = this.gastos;
+    iva = this.iva;
     this.calculoInteres();
     this.calculoArancel(0.9, 90);
-    this.calculoInteres(0.4, 30);
-    this.mFuturo = this.mContado + this.interes + this.gastos + this.iva;
+    this.calculoArancel(0.4, 30);
+    this.mFuturo =
+      parseFloat(mCdo) + parseFloat(int) + parseFloat(gtos) + parseFloat(iva);
   }
 }
 class Cuota {
@@ -88,8 +104,11 @@ class Prestamo {
     let tasaInt = this.interes / 100 / this.cuotasAnio;
     let interes;
     let fecha = new Date();
-    let cFija = this.capital * (tasaInt / ((1 - tasaInt) ^ (this.cuotas * -1)));
-    for (i = 0; this.cuotas - 1; i++) {
+    let cFija = (
+      this.capital *
+      (tasaInt / (1 - Math.pow(1 + tasaInt, this.cuotas * -1)))
+    ).toFixed(2);
+    for (let i = 0; i < this.cuotas; i++) {
       interes = capital * tasaInt;
       const cuota = new Cuota(
         fecha,
@@ -102,10 +121,9 @@ class Prestamo {
         cFija + interes * 0.21,
         "FR"
       );
-      //fecha=Date.prototype.getFullYear()
       this.calculo.push(cuota);
-      capital -= cFija;
-      fecha = addMonths(fecha.iMeses);
+      capital -= cFija - interes;
+      fecha = addMonths(fecha, this.iMeses);
     }
   }
 
@@ -115,22 +133,23 @@ class Prestamo {
     let interes;
     let fecha = new Date();
     let cFija = capital / this.cuotas;
-    for (i = 0; cuotas - 1; i++) {
+    for (let i = 0; i < this.cuotas; i++) {
       interes = capital * tasaInt;
+
       const cuota = new Cuota(
         fecha,
         i + 1,
-        capital,
-        cFija,
-        cFija,
-        interes,
-        interes * 0.21,
-        cFija + interes * 1.21,
+        capital.toFixed(2),
+        cFija.toFixed(2),
+        cFija.toFixed(2),
+        interes.toFixed(2),
+        (interes * 0.21).toFixed(2),
+        (cFija + interes * 1.21).toFixed(2),
         "DE"
       );
       this.calculo.push(cuota);
       capital -= cFija;
-      fecha = addMonths(fecha.iMeses);
+      fecha = addMonths(fecha, this.iMeses);
     }
   }
 
@@ -138,53 +157,66 @@ class Prestamo {
     let tasaInt = this.interes / 100 / this.cuotasAnio;
     let interes;
     let fecha = new Date();
-    for (i = 0; cuotas - 1; i++) {
+    for (let i = 0; i < this.cuotas; i++) {
       interes = this.capital * tasaInt;
-      if (i < coutas - 1) {
+      if (i < this.cuotas - 1) {
         const cuota = new Cuota(
           fecha,
           i + 1,
-          this.capital,
-          interes,
+          this.capital.toFixed(2),
+          interes.toFixed(2),
           0,
-          interes,
-          interes * 1.21,
+          interes.toFixed(2),
+          (interes * 0.21).toFixed(2),
+          (interes * 1.21).toFixed(2),
           "AM"
         );
+        this.calculo.push(cuota);
       } else {
+        const cuota = new Cuota(
+          fecha,
+          i + 1,
+          this.capital.toFixed(2),
+          (interes + this.capital).toFixed(2),
+          this.capital.toFixed(2),
+          interes.toFixed(2),
+          (interes * 0.21).toFixed(2),
+          (this.capital + interes * 1.21).toFixed(2),
+          "AM"
+        );
+        this.calculo.push(cuota);
       }
-      const cuota = new Cuota(
-        fecha,
-        i + 1,
-        this.capital,
-        interes,
-        this.capital,
-        interes,
-        interes * 0.21,
-        this.capital + interes * 1.21,
-        "AM"
-      );
-      this.calculo.push(cuota);
-      fecha = addMonths(fecha.iMeses);
+      fecha = addMonths(fecha, this.iMeses);
     }
   }
   caucion() {
     let montoCaucion = this.capital;
     let fCon = new Date();
-    let fLiq = addMonths(fCon, this.iMeses);
+    let fLiq = new Date();
+    fLiq = addMonths(fLiq, this.iMeses);
+
     let dias = dateDiff(fCon, fLiq);
-    for (i = 0; this.cuotas - 1; i++) {
+    while (montoCaucion > 0) {
       const nwCaucion = new Caucion(
-        fecha,
+        fCon,
         dias,
-        montoCaucion,
-        this.interes,
-        this.mCuotaCaucion
+        montoCaucion.toFixed(2),
+        this.interes.toFixed(2),
+        this.mCuotaCaucion.toFixed(2)
       );
-      nwCaucion.calculoInteres(0.4, 30);
+      nwCaucion.calculoInteres();
+      nwCaucion.calculoArancel(0.4, 30);
       nwCaucion.calculoArancel(0.9, 90);
       nwCaucion.actumFuturo();
-      montoCaucion -= this.mCuotaCaucion;
+      if (this.mCuotaCaucion < montoCaucion) {
+        montoCaucion =
+          parseFloat(nwCaucion.mFuturo) - parseFloat(this.mCuotaCaucion);
+      } else {
+        montoCaucion = 0;
+      }
+      this.calculo.push(nwCaucion);
+      fCon = fLiq;
+      fLiq = addMonths(fCon, this.iMeses);
     }
   }
   clearInfo() {
@@ -218,16 +250,16 @@ function menu() {
       nwPrestamo();
       break;
     case 2:
-      verPrestamo("FR");
+      alert(verPrestamo("FR"));
       break;
     case 3:
-      verPrestamo("DE");
+      alert(verPrestamo("DE"));
       break;
     case 4:
-      verPrestamo("AM");
+      alert(verPrestamo("AM"));
       break;
     case 5:
-      verPrestamo("CA");
+      alert(verPrestamo("CA"));
       break;
     case 6:
       //comparaCred();
@@ -244,7 +276,6 @@ function menu() {
 }
 
 function nwPrestamo() {
-  // (capital, cuotas, cuotasAnio, interes, mCuotaCaucion)
   prestamo.clearInfo();
   let dMonto = parseFloat(prompt("Ingrese Monto del Prestamo ($)", 0));
   let iCoutas = parseInt(prompt("Ingrese Cantidad de Coutas"), 0);
@@ -256,6 +287,7 @@ function nwPrestamo() {
     4-Mensual
     `)
   );
+
   let iCantCuotas = 0;
   switch (iTipCuota) {
     case 1:
@@ -271,22 +303,27 @@ function nwPrestamo() {
       iCantCuotas = 12;
       break;
   }
+
   let iTasa = parseInt(prompt("Ingrese Tasa (%)", 0));
-  let mCuotaCaucion = parseFloat(prompt("Ingrese Monto del Prestamo ($)", 0));
+  let mCuotaCaucion = parseFloat(
+    prompt("Ingrese Monto de Cancelacion Caucion ($)", 0)
+  );
   prestamo.capital = dMonto;
   prestamo.cuotas = iCoutas;
   prestamo.cuotasAnio = iCantCuotas;
-  prestamo.tasa = iTasa;
+  prestamo.interes = iTasa;
   prestamo.mCuotaCaucion = mCuotaCaucion;
+  prestamo.getiMeses();
   prestamo.metFrances();
   prestamo.metAleman();
   prestamo.metAmericano();
   prestamo.caucion();
 }
 function verPrestamo(sTipo) {
-  let arr = [];
   let sRes;
-  arr = prestamo.calculo.filter(calculo.metodo == sTipo);
+  const arr = prestamo.calculo.filter(function (reg) {
+    return reg.metodo == sTipo;
+  });
   if (sTipo == "CA") {
     sRes = `Fecha - Dias - Capital Restante - Tasa - Interes - Monto Futuro - Gastos - IVA - Cuota Rescate \n`;
   } else {
@@ -298,7 +335,9 @@ function verPrestamo(sTipo) {
     } else {
       sRes += `${cuota.cuota} - ${cuota.fecha} $ ${cuota.sdocapital}  $ ${cuota.cuotaBr} $ ${cuota.amortizacion} $ ${cuota.interes} $ ${cuota.iva} $ ${cuota.cuotaNeta} \n`;
     }
+    return sRes;
   }
+  // console.log(arr);
 }
 function compPrestamos() {}
 
@@ -308,8 +347,8 @@ function addMonths(date, months) {
   curDate.setMonth(curDate.getMonth() + months);
   return curDate;
 }
-function dateDiff(fechaIn, fechaFin) {
-  let res = Math.round((fechaIn - fechaFin) / (1000 * 60 * 60 * 24));
+function dateDiff(fIn, fFin) {
+  let res = Math.round((fIn - fFin) / (1000 * 60 * 60 * 24));
   if (res < 0) {
     res = res * -1;
   }
@@ -317,6 +356,6 @@ function dateDiff(fechaIn, fechaFin) {
 }
 
 let bSalir;
-while (bsalir != true) {
+while (bSalir != true) {
   menu();
 }
