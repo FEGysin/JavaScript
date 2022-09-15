@@ -329,14 +329,23 @@ function verPrestamo(sTipo) {
   } else {
     sRes = `Nro - Fecha - Capital Restante - Cuota Bruta - Amortizacion - Interes - IVA - Cuota Neta \n`;
   }
+  console.log(arr.length);
   for (let cuota of arr) {
     if (sTipo == "CA") {
-      sRes += `${cuota.fecha} $ ${cuota.dias} $ ${cuota.mContado} ${cuota.tasa} % $ ${cuota.interes} $ ${cuota.mFuturo} $ ${cuota.gastos} $ ${cuota.iva} $ ${cuota.cuota} \n`;
+      sRes += `${cuota.fecha.toLocaleDateString("es-AR")} ${cuota.dias} $ ${
+        cuota.mContado
+      } ${cuota.tasa} % $ ${cuota.interes} $ ${cuota.mFuturo} $ ${
+        cuota.gastos
+      } $ ${cuota.iva} $ ${cuota.cuota} \n`;
     } else {
-      sRes += `${cuota.cuota} - ${cuota.fecha} $ ${cuota.sdocapital}  $ ${cuota.cuotaBr} $ ${cuota.amortizacion} $ ${cuota.interes} $ ${cuota.iva} $ ${cuota.cuotaNeta} \n`;
+      sRes += `${cuota.cuota} - ${cuota.fecha.toLocaleDateString("es-AR")} $ ${
+        cuota.sdocapital
+      }  $ ${cuota.cuotaBr} $ ${cuota.amortizacion} $ ${cuota.interes} $ ${
+        cuota.iva
+      } $ ${cuota.cuotaNeta} \n`;
     }
-    return sRes;
   }
+  return sRes;
   // console.log(arr);
 }
 function compPrestamos() {}
