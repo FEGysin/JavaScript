@@ -1,3 +1,7 @@
+let recipeCard = document.getElementById("recipeCard");
+let recCardIngredientes = document.getElementById("recCardIngredientes");
+let recCardPasos = document.getElementById("recCardPasos");
+let recetario = document.getElementById("recetario");
 class Receta {
   constructor(id, nombre) {
     (this.id = id),
@@ -93,21 +97,165 @@ class Paso {
   }
 }
 const Recetario = [];
+nwRecetas();
+getRecetario();
+getIngredientes(0);
+getPasos(0);
+function nwRecetas() {
+  const Recipe1 = new Receta(1, "Berenjenas");
+  Recipe1.addIngrediente(0, "Berenjenas", "4");
+  Recipe1.addIngrediente(0, "Agua", "300cc");
+  Recipe1.addIngrediente(0, "Vinagre de Vino", "300cc");
+  Recipe1.addIngrediente(0, "Vinagre de Alcohol", "300cc");
+  Recipe1.addIngrediente(0, "Sal", "c/n");
+  Recipe1.addIngrediente(0, "Dientes de Ajo", "4");
+  Recipe1.addIngrediente(0, "Pimienta en Grano", "c/n");
+  Recipe1.addIngrediente(0, "Ají Molido", "c/n");
+  Recipe1.addIngrediente(0, "Aceite de Girasol", "c/n");
 
-const Recipe1 = new Receta(1, "Berenjenas");
-Recipe1.addIngrediente(0, "Berenjenas", "4");
-Recipe1.addIngrediente(0, "Agua", "300cc");
-Recipe1.addIngrediente(0, "Vinagre", "300cc");
-Recipe1.addIngrediente(0, "Dientes de Ajo", "4");
-Recipe1.addIngrediente(0, "Pimienta en Grano", "c/n");
-Recipe1.addIngrediente(5, "Aji Molido", "c/n");
-const Recipe2 = new Receta(2, "Pepinos");
-const Recipe3 = new Receta(3, "Pan de Carne");
+  Recipe1.addPaso(
+    0,
+    "Pelar las Berenjenas y cortarlas en rodajas de 2 cm aproximadamente"
+  );
+  Recipe1.addPaso(
+    0,
+    "Colocar las Berenjenas contadas en agua y sal por 30 minutos"
+  );
+  Recipe1.addPaso(
+    0,
+    "Colar las Berenjenas y ponerlas a hervir con el Agua y los 2 Vinagres y Sal a Gusto"
+  );
+  Recipe1.addPaso(0, "Pelar y cortar el ajo");
+  Recipe1.addPaso(
+    0,
+    "Dejar Hervir hasta que las Berenjenas se puedan pinchar fácilmente"
+  );
+  Recipe1.addPaso(
+    0,
+    "Colar las Berenjenas reservando parte del Liquido de Cocción"
+  );
+  Recipe1.addPaso(
+    0,
+    "En un frasco de Vidrio coloque las Berenjenas hasta hacer un piso"
+  );
+  Recipe1.addPaso(
+    0,
+    "Agregue una pizca del Ajo, una Pizca de Ají Molido y unos Granos de Pimienta Negra"
+  );
+  Recipe1.addPaso(
+    0,
+    "Repita los últimos 2 pasos hasta llegar casi al borde del frasco"
+  );
+  Recipe1.addPaso(
+    0,
+    "Una Vez Terminado agregue liquido de Cocción hasta la mitad y complete con aceite hasta tapar las berenjenas "
+  );
+  Recipe1.addPaso(
+    0,
+    "Reservar en Heladera 1 día para que asienten los sabores"
+  );
+  Recipe1.addPaso(0, "Disfrútelas !!!");
 
-Recetario.push(Recipe1);
-Recetario.push(Recipe2);
-Recetario.push(Recipe3);
+  const Recipe2 = new Receta(2, "Morrones con Ajo");
+  Recipe2.addIngrediente(0, "Morrones Rojo", "4");
+  Recipe2.addIngrediente(0, "Dientes de Ajo", "4");
+  Recipe2.addIngrediente(0, "Sal", "c/n");
+  Recipe2.addIngrediente(0, "Aceite de Girasol", "c/n");
 
+  Recipe2.addPaso(
+    0,
+    "Al seleccionar los morrones fíjese que tengas las caras parejas"
+  );
+  Recipe2.addPaso(0, "Lave los Morrones y séquelos");
+  Recipe2.addPaso(
+    0,
+    "Acéitese las manos, aceite los morrones y colóquelos en una Bandeja para Horno"
+  );
+  Recipe2.addPaso(0, "Prenda el Horno y déjelo Calentar");
+  Recipe2.addPaso(
+    0,
+    "Coloque los Morrones en el Horno girándolos cada tanto para que las caras se cocinen parejas"
+  );
+  Recipe2.addPaso(
+    0,
+    "Cuando la piel este bien dorada y los morrones ya se perciban cocidos, retírelos del Horno"
+  );
+  Recipe2.addPaso(
+    0,
+    "Coloque los Morrones en un recipiente, hágale un corte y envuélvalo con una Bolsa plástica"
+  );
+  Recipe2.addPaso(0, "Deje Reposar hasta que entibien");
+  Recipe2.addPaso(
+    0,
+    "Saque de a uno los Morrones, retírele la piel el cabo y las semillas dejando solamente la carne del Morrón"
+  );
+  Recipe2.addPaso(
+    0,
+    "Corte los Morrones y colóquelos nuevamente en el jugo que quedo en el recipiente"
+  );
+  Recipe2.addPaso(0, "Agregue el ajo previamente picado y sal a gusto");
+  Recipe2.addPaso(0, "En un frasco de Vidrio coloque la Preparación.");
+  Recipe2.addPaso(0, "Complete con aceite hasta tapar los Morrones");
+  Recipe2.addPaso(
+    0,
+    "Reservar en Heladera 1 día para que asienten los sabores"
+  );
+  Recipe2.addPaso(0, "Disfrútelos !!!");
+
+  const Recipe3 = new Receta(3, "Pan de Carne");
+  Recipe3.addIngrediente(0, "Carne Picada", "500gr");
+  Recipe3.addIngrediente(0, "Fetas de Jamón Cocido", "5");
+  Recipe3.addIngrediente(0, "Fetas de Queso de Barra", "5");
+  Recipe3.addIngrediente(0, "Huevos", "2");
+  Recipe3.addIngrediente(0, "Pan Rallado", "150gr");
+  Recipe3.addIngrediente(0, "Dientes de Ajo", "2");
+  Recipe3.addIngrediente(0, "Pimienta", "c/n");
+  Recipe3.addIngrediente(0, "Aji Molido", "c/n");
+  Recipe3.addIngrediente(0, "Sal", "c/n");
+  Recipe3.addIngrediente(0, "Moztaza", "c/n");
+  Recipe3.addIngrediente(0, "Aceite de Girasol", "c/n");
+
+  Recipe3.addPaso(0, "Pique los dientes de Ajo");
+  Recipe3.addPaso(
+    0,
+    "Bata los Huevos y añada Pimienta, Ají Molido y Sal a Gusto"
+  );
+  Recipe3.addPaso(
+    0,
+    "Mezcle la carne picada con los huevos sazonados y el Pan rallado"
+  );
+  Recipe3.addPaso(
+    0,
+    "Sobre un Film o un Paño limpio espolvoree un poco de Pan rallado"
+  );
+  Recipe3.addPaso(
+    0,
+    "Vierta la Mezcla sobre el paño dándole forma rectangular de aproximadamente 1 cm de alto"
+  );
+  Recipe3.addPaso(
+    0,
+    "Pincele con un poco de Mostaza el rectángulo de carne picada"
+  );
+  Recipe3.addPaso(
+    0,
+    "Distribuya el jamón cocido y luego el queso sobre la carne picada"
+  );
+  Recipe3.addPaso(0, "Arrolle la preparación y forma un cilindro");
+  Recipe3.addPaso(
+    0,
+    "Aceite la base de una Bandeja para Horno y coloque el pan de carne"
+  );
+  Recipe3.addPaso(0, "Pincele nuevamente con mostaza");
+  Recipe3.addPaso(
+    0,
+    "Coloque la bandeja en el Horno y cocine por aproximadamente 45 minutos (puede rotar la preparación para una cocción más pareja)"
+  );
+  Recipe3.addPaso(0, "Retire del Horno córtelo en rodajas y Disfrute");
+
+  Recetario.push(Recipe1);
+  Recetario.push(Recipe2);
+  Recetario.push(Recipe3);
+}
 // Recetario[0].delIngrediente(3);
 
 // verRecetario();
@@ -201,6 +349,7 @@ function addReceta() {
     }
   }
   Recetario.push(nwRecipe);
+
   console.log(nwRecipe);
   alert("La Receta fue Agregada del Recetario");
 }
@@ -334,30 +483,57 @@ function verReceta() {
 }
 
 function getRecetario() {
-  let sRes = `\n`;
+  //let sRes = `\n`;
   for (let recetas of Recetario) {
-    sRes += `${recetas.id} - ${recetas.nombre} \n`;
+    //sRes += `${recetas.id} - ${recetas.nombre} \n`;
+    let nwRecetaItem = document.createElement("a");
+    nwRecetaItem.innerHTML = ` <a id="${recetas.id}"
+                class="list-group-item py-3 lh-sm mt-2">
+          <div>
+            <img src="../recursos/img/comida.jpg" alt="imgComidas" style="width=80%" />
+          </div>
+          <div
+            class="d-flex w-100 align-items-center justify-content-between text-center">
+              <strong class="mb-1">${recetas.nombre}</strong>
+          </div>
+        </a>`;
+    nwRecetaItem.addEventListener("click", () => {
+      clearCard();
+      getIngredientes(recetas.id - 1);
+      getPasos(recetas.id - 1);
+    });
+    recetario.appendChild(nwRecetaItem);
   }
-  return sRes;
+  //return sRes;
 }
-
+function clearCard() {
+  recCardIngredientes.innerHTML = "";
+  recCardPasos.innerHTML = "";
+}
 function getIngredientes(id) {
-  let sRes = `\n`;
+  //let sRes = `\n`;
   for (let ingrediente of Recetario[id].ingredientes) {
-    sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
+    //  sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
+    //agregar item al recCardIngredientes
+    let nwIngredItem = document.createElement("li");
+    nwIngredItem.innerHTML = `<li id="${ingrediente.id}" class="list-group-item">${ingrediente.producto} <span>${ingrediente.cantidad}</span></li>`;
+    recCardIngredientes.appendChild(nwIngredItem);
   }
-  return sRes;
+  //return sRes;
 }
 
 function getPasos(id) {
-  let sRes = `\n`;
+  //let sRes = `\n`;
   for (let paso of Recetario[id].pasos) {
-    sRes += `${paso.id}° Paso\n - ${paso.detPaso}\n`;
+    //sRes += `${paso.id}° Paso\n - ${paso.detPaso}\n`;
+    let nwPasoItem = document.createElement("li");
+    nwPasoItem.innerHTML = `<li id="${paso.id}" class="list-group-item"> Paso ${paso.id}: \n ${paso.detPaso}</li>`;
+    recCardPasos.appendChild(nwPasoItem);
   }
-  return sRes;
+  //return sRes;
 }
 
 let bSalir;
-while (bSalir != true) {
-  menu();
-}
+// while (bSalir != true) {
+//   menu();
+// }
