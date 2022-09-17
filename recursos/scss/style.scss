@@ -1,57 +1,34 @@
 *   {
-  margin: 10;
-  padding: 10;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-}
-.header{
-  width: 95%;
+}   
+.encab{
+  height:50px;
+  color:antiquewhite;
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: medium;
 }
 #recCardImg{
   padding-left: 10px;
-}
+} 
 #recCardPasos{
   margin: 10px;
   padding-left: 10;
   width:90%
 }
-.bi {
-    vertical-align: -0.125em;
-    fill: currentColor;
-  }
+#recipeCard{
+max-width: 90%;
+}
 
-  .nav-scroller {
-    position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
+  .recetario{
+    width: 280px;
   }
-
-  .nav-scroller .nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    /*-webkit-overflow-scrolling: touch;*/
-  }
-  body {
-   
-    min-height: -webkit-fill-available;
-     min-height: 100vh;
-  }
-  
-  // html {
-  //   height: -webkit-fill-available;
-  // }
-  // .recetario{
-  //   width: 360px;
-  // }
   main {
    height: -webkit-fill-available;
-   height: 100vh;
-   max-height: 100vh;
+   height: 95vh;
+   max-height: 89vh;
     overflow-x: auto;
     overflow-y: hidden;
   }

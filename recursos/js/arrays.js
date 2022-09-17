@@ -97,10 +97,12 @@ class Paso {
   }
 }
 const Recetario = [];
+
 nwRecetas();
 getRecetario();
 getIngredientes(0);
 getPasos(0);
+
 function nwRecetas() {
   const Recipe1 = new Receta(1, "Berenjenas");
   Recipe1.addIngrediente(0, "Berenjenas", "4");
@@ -305,6 +307,7 @@ function menu() {
       break;
   }
 }
+
 function addReceta() {
   let nomReceta = prompt("Ingrese Nombre de la Receta");
   let bContinuar = false;
@@ -484,10 +487,11 @@ function verReceta() {
 
 function getRecetario() {
   //let sRes = `\n`;
-  for (let recetas of Recetario) {
-    //sRes += `${recetas.id} - ${recetas.nombre} \n`;
-    let nwRecetaItem = document.createElement("a");
-    nwRecetaItem.innerHTML = ` <a id="${recetas.id}"
+  if (Recetario.length > 0) {
+    for (let recetas of Recetario) {
+      //sRes += `${recetas.id} - ${recetas.nombre} \n`;
+      let nwRecetaItem = document.createElement("a");
+      nwRecetaItem.innerHTML = ` <a id=rec"${recetas.id}"
                 class="list-group-item py-3 lh-sm mt-2">
           <div>
             <img src="../recursos/img/comida.jpg" alt="imgComidas" style="width=80%" />
@@ -497,26 +501,29 @@ function getRecetario() {
               <strong class="mb-1">${recetas.nombre}</strong>
           </div>
         </a>`;
-    nwRecetaItem.addEventListener("click", () => {
-      clearCard();
-      getIngredientes(recetas.id - 1);
-      getPasos(recetas.id - 1);
-    });
-    recetario.appendChild(nwRecetaItem);
+      nwRecetaItem.addEventListener("click", () => {
+        clearCard();
+        getIngredientes(recetas.id - 1);
+        getPasos(recetas.id - 1);
+      });
+      recetario.appendChild(nwRecetaItem);
+    }
   }
   //return sRes;
 }
+
 function clearCard() {
   recCardIngredientes.innerHTML = "";
   recCardPasos.innerHTML = "";
 }
+
 function getIngredientes(id) {
   //let sRes = `\n`;
   for (let ingrediente of Recetario[id].ingredientes) {
     //  sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
     //agregar item al recCardIngredientes
     let nwIngredItem = document.createElement("li");
-    nwIngredItem.innerHTML = `<li id="${ingrediente.id}" class="list-group-item">${ingrediente.producto} <span>${ingrediente.cantidad}</span></li>`;
+    nwIngredItem.innerHTML = `<li id=ing"${ingrediente.id}" class="list-group-item">${ingrediente.producto} <span>${ingrediente.cantidad}</span></li>`;
     recCardIngredientes.appendChild(nwIngredItem);
   }
   //return sRes;
@@ -527,13 +534,13 @@ function getPasos(id) {
   for (let paso of Recetario[id].pasos) {
     //sRes += `${paso.id}° Paso\n - ${paso.detPaso}\n`;
     let nwPasoItem = document.createElement("li");
-    nwPasoItem.innerHTML = `<li id="${paso.id}" class="list-group-item"> Paso ${paso.id}: \n ${paso.detPaso}</li>`;
+    nwPasoItem.innerHTML = `<li id=pas"${paso.id}" class="list-group-item"> Paso ${paso.id}: \n ${paso.detPaso}</li>`;
     recCardPasos.appendChild(nwPasoItem);
   }
   //return sRes;
 }
 
-let bSalir;
+//let bSalir;
 // while (bSalir != true) {
 //   menu();
 // }
