@@ -2,6 +2,14 @@ let recipeCard = document.getElementById("recipeCard");
 let recCardIngredientes = document.getElementById("recCardIngredientes");
 let recCardPasos = document.getElementById("recCardPasos");
 let recetario = document.getElementById("recetario");
+let curIngrediente = 0;
+let curPaso = 0;
+let lblModalAdd = document.getElementById("modalRecipeLabel");
+let modalAdd = document.getElementById("modalBody");
+let btnRecetaAdd = document.getElementById("addReceta");
+let btnSave = document.getElementById("btnSave");
+let Recetario = [];
+
 class Receta {
   constructor(id, nombre) {
     (this.id = id),
@@ -69,7 +77,12 @@ class Receta {
       });
     }
   }
-
+  modPaso(id, detPaso) {
+    let index = this.pasos.findIndex((paso) => {
+      return paso.id == id;
+    });
+    this.pasos[index].detPaso = detPaso;
+  }
   delPaso(id) {
     let index = this.pasos.findIndex((paso) => {
       return paso.id == id;
@@ -85,7 +98,6 @@ class Receta {
     });
   }
 }
-
 class Ingrediente {
   constructor(id, producto, cantidad) {
     (this.id = id), (this.producto = producto), (this.cantidad = cantidad);
@@ -96,12 +108,68 @@ class Paso {
     (this.id = id), (this.detPaso = detPaso);
   }
 }
-const Recetario = [];
 
-nwRecetas();
+//nwRecetas();
 getRecetario();
-getIngredientes(0);
-getPasos(0);
+getIngredientes(0, recCardIngredientes, false);
+getPasos(0, recCardPasos, false);
+// Recetario[0].modIngrediente(0, 0);
+
+function getRecetario() {
+  //let sRes = `\n`;
+  // if (localStorage.getItem(`recetario`)) {
+  //   let recetas = JSON.parse(localStorage.getItem(`recetario`));
+  //   for (const obj of recetas) {
+  //     console.log(obj);
+  //     Recetario.push(obj);
+  //   }
+  // } else {
+  nwRecetas();
+  saveRecetario();
+  // }
+  console.log(Recetario);
+  if (Recetario.length > 0) {
+    recetario.innerHTML = ``;
+    for (let recetas of Recetario) {
+      //sRes += `${recetas.id} - ${recetas.nombre} \n`;
+      let nwRecetaItem = document.createElement("a");
+      nwRecetaItem.innerHTML = ` <a id=rec"${recetas.id}"
+                class="list-group-item py-3 lh-sm mt-2">
+          <div>
+            <img src="../recursos/img/comida.jpg" alt="imgComidas" style="width=80%" />
+          </div>
+          <div
+            class="d-flex w-100 justify-content-between text-center">
+              <strong class="mb-1">${recetas.nombre}</strong>
+              <div>
+              <button id="btnMod${recetas.id}" class="btnMod btn btn-success">
+                <i class="bi bi-pen-fill"></i>
+              </button>
+              <button id="btnDel${recetas.id}" class="btnDel btn btn-danger">
+                <i class="bi bi-trash3-fill"></i>
+              </button>
+            </div>
+          </div>
+        </a>`;
+      nwRecetaItem.addEventListener("click", () => {
+        clearCard();
+        getIngredientes(recetas.id - 1, recCardIngredientes, false);
+        getPasos(recetas.id - 1, recCardPasos, false);
+      });
+      recetario.appendChild(nwRecetaItem);
+      let btnMod = document.getElementById(`btnMod${recetas.id}`);
+
+      let btnDel = document.getElementById(`btnDel${recetas.id}`);
+      btnDel.addEventListener("click", () => {
+        delReceta(recetas.id - 1);
+        getRecetario();
+
+        console.log(Recetario);
+      });
+      recetario.appendChild(nwRecetaItem);
+    }
+  }
+}
 
 function nwRecetas() {
   const Recipe1 = new Receta(1, "Berenjenas");
@@ -258,12 +326,160 @@ function nwRecetas() {
   Recetario.push(Recipe2);
   Recetario.push(Recipe3);
 }
-// Recetario[0].delIngrediente(3);
 
-// verRecetario();
-// alert(getIngredientes(0));
-// alert(getPasos(0));
+function saveRecetario() {
+  localStorage.setItem(`recetario`, JSON.stringify(Recetario));
+}
 
+function getIngredientes(id, objDestino, bModDel) {
+  //let sRes = `\n`;
+  recCardIngredientes.innerHTML = "";
+  for (let ingrediente of Recetario[id].ingredientes) {
+    //  sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
+    //agregar item al recCardIngredientes
+    let nwIngredItem = document.createElement("a");
+    if (bModDel == true) {
+      nwIngredItem.innerHTML = `
+    <a id=addModIng"${ingrediente.id}" class="recIngrediente list-group-item d-flex row">
+      <div class="d-flex row w-100 justify-content-between text-center">
+        <div class="col-4">${ingrediente.producto}</div>
+        <div class="col-2">${ingrediente.cantidad}</div>
+      </div>
+    </a>`;
+      objDestino.appendChild(nwIngredItem);
+    } else {
+      nwIngredItem.innerHTML = `
+    <a id=addModIng"${ingrediente.id}" class="recIngrediente list-group-item d-flex row">
+      <div class="row justify-content-between text-center">
+        <div class="col-5">${ingrediente.producto}</div>
+        <div class="col-3">${ingrediente.cantidad}</div>
+      </div>  
+        <div class="row justify-content-end">
+           <button id="btnModIng${ingrediente.id}" class="btnMod btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalRecipe">
+            <i class="bi bi-pen-fill"></i>
+          </button>
+          <button id="btnDelIng${ingrediente.id}" class="btnDel btn btn-danger">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
+        </div>
+    </a>`;
+      //  <button id="btnAddIng${ingrediente.id}" class="btnMod btn btn-success">
+      //  <i class="bi bi-plus-circle"></i>
+      //</button>
+      nwIngredItem.addEventListener("click", () => {
+        curIngrediente = ingrediente.id - 1;
+        console.log(curIngrediente);
+      });
+      objDestino.appendChild(nwIngredItem);
+      //let btnAdd = document.getElementById(`btnAddIng${ingrediente.id}`);
+      let btnMod = document.getElementById(`btnModIng${ingrediente.id}`);
+      let btnDel = document.getElementById(`btnDelIng${ingrediente.id}`);
+      // btnAdd.addEventListener("click", () => {});
+      btnMod.addEventListener("click", () => {
+        modalAdd.innerHTML = "";
+        lblModalAdd.innerText = "Modificacion Ingrediente";
+        let ingModal = document.createElement(`div`);
+        ingModal.innerHTML = `   <div class="d-flex row justify-content-around">
+       <input class="col-5" type="text" name="" id="txtIngrediente" value="${ingrediente.producto}" readonly>
+       <input class="col-3" type="text" name="" id="txtIngCant" value="${ingrediente.cantidad}">
+     </div>`;
+        modalAdd.appendChild(ingModal);
+        btnSave.addEventListener("click", () => {
+          console.log(document.getElementById("txtIngCant").value);
+          Recetario[id].modIngrediente(
+            ingrediente.id,
+            document.getElementById("txtIngCant").value
+          );
+          getIngredientes(id, objDestino, bModDel);
+        });
+      });
+      btnDel.addEventListener("click", () => {
+        Recetario[id].delIngrediente(ingrediente.id);
+        objDestino.innerHTML = "";
+        getIngredientes(id, objDestino, bModDel);
+        alert("Ingrediente Eliminado");
+      });
+      objDestino.appendChild(nwIngredItem);
+    }
+  }
+}
+
+function getPasos(id, objDestino, bModDel) {
+  recCardPasos.innerHTML = "";
+  for (let paso of Recetario[id].pasos) {
+    let nwPasoItem = document.createElement("a");
+    if (bModDel == true) {
+      nwPasoItem.innerHTML = `<a id=pas"${paso.id}"class="recPaso d-flex m-2 row list-group-item"> Paso ${paso.id}: \n ${paso.detPaso}</a>`;
+      objDestino.appendChild(nwPasoItem);
+    } else {
+      nwPasoItem.innerHTML = `<a id=pas"${paso.id}" class="recPaso d-flex row list-group-item"> <div class="Row"> <p>Paso ${paso.id}: \n ${paso.detPaso}</p></div>
+        <div class="row justify-content-end">
+     <button id="btnAddPas${paso.id}" class="btnMod btn btn-success"  data-bs-toggle="modal" data-bs-target="#modalRecipe">
+  <i class="bi bi-plus-circle"></i>
+</button>   
+<button id="btnModPas${paso.id}" class="btnMod btn btn-secondary data-bs-toggle="modal" data-bs-target="#modalRecipe">
+  <i class="bi bi-pen-fill"></i>
+</button>
+<button id="btnDelPas${paso.id}" class="btnDel btn btn-danger">
+  <i class="bi bi-trash3-fill"></i>
+</button>
+</div>
+        </a>`;
+      nwPasoItem.addEventListener("click", () => {
+        curPaso = paso.id - 1;
+        console.log(curPaso);
+      });
+      objDestino.appendChild(nwPasoItem);
+
+      let btnAdd = document.getElementById(`btnAddPas${paso.id}`);
+      let btnMod = document.getElementById(`btnModPas${paso.id}`);
+      let btnDel = document.getElementById(`btnDelPas${paso.id}`);
+      btnAdd.addEventListener("click", () => {
+        modalAdd.innerHTML = "";
+        lblModalAdd.innerText = "Agregar un Paso Previo";
+        let ingModal = document.createElement(`div`);
+        ingModal.innerHTML = `   <div class="d-flex row justify-content-around">
+       <input class="col-10" type="text" name="" id="txtDetPaso" value="${paso.detPaso}">
+         </div>`;
+        modalAdd.appendChild(ingModal);
+        btnSave.addEventListener("click", () => {
+          Recetario[id].addPaso(
+            paso.id,
+            document.getElementById("txtDetPaso").value
+          );
+          getPasos(id, objDestino, bModDel);
+        });
+      });
+      btnMod.addEventListener("click", () => {
+        lblModalAdd.innerText = "Modificacion de Paso";
+        modalAdd.innerHTML = "";
+        let ingModal = document.createElement(`div`);
+        ingModal.innerHTML = `   <div class="d-flex row justify-content-around">
+       <input class="col-10" type="text" name="" id="txtDetPaso" value="${paso.detPaso}">
+         </div>`;
+        modalAdd.appendChild(ingModal);
+        btnSave.addEventListener("click", () => {
+          Recetario[id].modPaso(
+            paso.id,
+            document.getElementById("txtDetPaso").value
+          );
+          getPasos(id, objDestino, bModDel);
+        });
+      });
+      btnDel.addEventListener("click", () => {
+        Recetario[id].delPaso(paso.id);
+        objDestino.innerHTML = "";
+        getPasos(id, objDestino, bModDel);
+        alert("Paso Eliminado");
+      });
+      objDestino.appendChild(nwPasoItem);
+    }
+  }
+}
+
+btnRecetaAdd.addEventListener("click", () => {
+  //modalAdd.appendChild();
+});
 function getOpc() {
   let res = parseInt(
     prompt(`Seleccione una Opcion:
@@ -276,6 +492,7 @@ function getOpc() {
   );
   return res;
 }
+
 function menu() {
   let res = getOpc();
   if (isNaN(res)) {
@@ -414,6 +631,7 @@ function modReceta() {
       res = parseInt(
         prompt(`Seleccione el Ingrediente a Eliminar ${getIngredientes(index)}`)
       );
+
       Recetario[index].delIngrediente(res);
       alert("Ingrediente Eliminado");
       break;
@@ -447,14 +665,7 @@ function modReceta() {
   }
 }
 
-function delReceta() {
-  let res = parseInt(
-    prompt(`Seleccione una Receta a dar de Baja
-${getRecetario()}`)
-  );
-  let index = Recetario.findIndex((receta) => {
-    return receta.id == res;
-  });
+function delReceta(index) {
   Recetario.splice(index, 1);
   for (let receta of Recetario) {
     if (receta.id >= res) {
@@ -467,80 +678,7 @@ ${getRecetario()}`)
   alert("La Receta Fue Eliminada del Recetario");
 }
 
-function verRecetario() {
-  alert(`Nuestro Recetario Ofrece:\n ${getRecetario()}`);
-}
-
-function verReceta() {
-  let res = parseInt(
-    prompt(`Seleccione una Receta a der de Baja
-    ${getRecetario()}`)
-  );
-  let index = Recetario.findIndex((receta) => {
-    return receta.id == res;
-  });
-  let sRes = `${Recetario[index].nombre}\n \n Ingredientes: ${getIngredientes(
-    index
-  )}\n Preparacion:\n${getPasos(index)}`;
-  alert(sRes);
-}
-
-function getRecetario() {
-  //let sRes = `\n`;
-  if (Recetario.length > 0) {
-    for (let recetas of Recetario) {
-      //sRes += `${recetas.id} - ${recetas.nombre} \n`;
-      let nwRecetaItem = document.createElement("a");
-      nwRecetaItem.innerHTML = ` <a id=rec"${recetas.id}"
-                class="list-group-item py-3 lh-sm mt-2">
-          <div>
-            <img src="../recursos/img/comida.jpg" alt="imgComidas" style="width=80%" />
-          </div>
-          <div
-            class="d-flex w-100 align-items-center justify-content-between text-center">
-              <strong class="mb-1">${recetas.nombre}</strong>
-          </div>
-        </a>`;
-      nwRecetaItem.addEventListener("click", () => {
-        clearCard();
-        getIngredientes(recetas.id - 1);
-        getPasos(recetas.id - 1);
-      });
-      recetario.appendChild(nwRecetaItem);
-    }
-  }
-  //return sRes;
-}
-
 function clearCard() {
   recCardIngredientes.innerHTML = "";
   recCardPasos.innerHTML = "";
 }
-
-function getIngredientes(id) {
-  //let sRes = `\n`;
-  for (let ingrediente of Recetario[id].ingredientes) {
-    //  sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
-    //agregar item al recCardIngredientes
-    let nwIngredItem = document.createElement("li");
-    nwIngredItem.innerHTML = `<li id=ing"${ingrediente.id}" class="list-group-item">${ingrediente.producto} <span>${ingrediente.cantidad}</span></li>`;
-    recCardIngredientes.appendChild(nwIngredItem);
-  }
-  //return sRes;
-}
-
-function getPasos(id) {
-  //let sRes = `\n`;
-  for (let paso of Recetario[id].pasos) {
-    //sRes += `${paso.id}° Paso\n - ${paso.detPaso}\n`;
-    let nwPasoItem = document.createElement("li");
-    nwPasoItem.innerHTML = `<li id=pas"${paso.id}" class="list-group-item"> Paso ${paso.id}: \n ${paso.detPaso}</li>`;
-    recCardPasos.appendChild(nwPasoItem);
-  }
-  //return sRes;
-}
-
-//let bSalir;
-// while (bSalir != true) {
-//   menu();
-// }

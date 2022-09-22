@@ -17,36 +17,40 @@
     />
     <link rel="stylesheet" href="./recursos/css/style.css" />
   </head>
+
   <body>
     <header class="encab col-9 bg-black">
       <h1>RECETARIO ONLINE</h1>
     </header>
-    <main class="d-flex flex-nowrap">
-      <div id="recipeCard" class="m-2 col-9 bg-body scrollarea">
+
+    <main class="class main d-flex justify-content-between">
+      <div id="recipeCard" class="p-2 p-3 col-8 scrollarea">
         <div class="row d-flex justify-content-evenly">
-          <div class="col-7 d-flex">
+          <div class="col-6 d-flex">
             <img id="recCardImg" src="./recursos/img/comida.jpg" alt="" />
           </div>
-          <div class="col-4 bg-light">
+
+          <div class="col-5 bg-light">
             <h3>Ingredientes</h3>
-            <ul
+            <div
               id="recCardIngredientes"
-              class="list-group list-group-flush border-bottom scrollarea"
-            ></ul>
+              class="list-group list-group-flush border-bottom scrollarea text-decoration-none"
+            ></div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-11 d-flex flex-column align-content-center">
+        <div class="row d-flex justify-content-center">
+          <div class="col-11">
             <h3 class="p-4 text-center">Preparacion</h3>
-            <ul
+            <div
               id="recCardPasos"
-              class="list-group list-group-flush border-bottom scrollarea"
-            ></ul>
+              class="list-group list-group-flush border-bottom scrollarea text-decoration-none"
+            ></div>
           </div>
         </div>
       </div>
+
       <div
-        class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+        class="col-3 d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
       >
         <a
           href="/"
@@ -60,22 +64,80 @@
 
         <div class="list-group list-group-flush border-bottom scrollarea">
           <div id="recetario">
-            <!-- <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-            <div
-              class="d-flex w-100 align-items-center justify-content-between"
+            <!-- <a
+              href="#"
+              class="list-group-item list-group-item-action py-3 lh-sm"
             >
-              <strong class="mb-1">List group item heading</strong>
-              <small class="text-muted">Tues</small>
-            </div>
-            <div class="col-10 mb-1 small">
-              Some placeholder content in a paragraph below the heading and
-              date.
-            </div>
-          </a>-->
+              <div
+                class="d-flex w-100 align-items-center justify-content-between"
+              >
+                <strong class="mb-1">List group item heading</strong>
+                <div>
+                  <button id="bntMod" class="btnMod btn btn-success">
+                    <i class="bi bi-pen-fill"></i>
+                  </button>
+                  <button id="btnDel" class="btnDel btn btn-danger">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-10 mb-1 small">
+                Some placeholder content in a paragraph below the heading and
+                date.
+              </div>
+            </a>-->
           </div>
-          <button class="btn btn-primary mt-2 mb-2" id="addReceta">
+          <button
+            class="btn btn-primary mt-2 mb-2 d-flex justify-content-between"
+            data-bs-toggle="modal" data-bs-target="#modalRecipe"
+            id="addReceta"
+            data-bs-toggle="modal"
+            data-bs-target="#modalRecipe"
+          >
             Agregar Receta
+            <i class="bi bi-plus-circle-fill"></i>
           </button>
+        </div>
+      </div>
+      <div
+        class="modal fade"
+        id="modalRecipe"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalRecipeLabel"></h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div id="modalBody" class="modal-body">
+              <div class="d-flex row justify-content-around">
+                <input class="col-5" type="text" name="" id="txtIngrediente" value="">
+                <input class="col-3" type="text" name="" id="txtIngCant" value="">
+              </div>
+            </div>
+            <!--<div class="modal-footer">-->
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" id="btnSave" data-bs-dismiss="modal">
+                Save changes
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
