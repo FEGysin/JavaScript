@@ -11,11 +11,11 @@ let btnSave = document.getElementById("btnSave");
 let Recetario = [];
 
 class Receta {
-  constructor(id, nombre) {
+  constructor(id, nombre, ingredientes = [], pasos = []) {
     (this.id = id),
       (this.nombre = nombre),
-      (this.ingredientes = []),
-      (this.pasos = []);
+      (this.ingredientes = ingredientes),
+      (this.pasos = pasos);
   }
   addIngrediente(id, producto, cantidad) {
     if (id == 0) {
@@ -116,17 +116,23 @@ getPasos(0, recCardPasos, false);
 // Recetario[0].modIngrediente(0, 0);
 
 function getRecetario() {
-  //let sRes = `\n`;
-  // if (localStorage.getItem(`recetario`)) {
-  //   let recetas = JSON.parse(localStorage.getItem(`recetario`));
-  //   for (const obj of recetas) {
-  //     console.log(obj);
-  //     Recetario.push(obj);
-  //   }
-  // } else {
-  nwRecetas();
-  saveRecetario();
-  // }
+  let sRes = `\n`;
+  if (localStorage.getItem(`recetario`)) {
+    let recetas = JSON.parse(localStorage.getItem(`recetario`));
+    for (const obj of recetas) {
+      // console.log(obj);
+      let nwReceta = new Receta(
+        obj.id,
+        obj.nombre,
+        obj.ingredientes,
+        obj.pasos
+      );
+      Recetario.push(nwReceta);
+    }
+  } else {
+    nwRecetas();
+    saveRecetario();
+  }
   console.log(Recetario);
   if (Recetario.length > 0) {
     recetario.innerHTML = ``;
@@ -390,7 +396,9 @@ function getIngredientes(id, objDestino, bModDel) {
             ingrediente.id,
             document.getElementById("txtIngCant").value
           );
+          saveRecetario();
           getIngredientes(id, objDestino, bModDel);
+          alert("Ingrediente Modificado");
         });
       });
       btnDel.addEventListener("click", () => {
@@ -447,7 +455,9 @@ function getPasos(id, objDestino, bModDel) {
             paso.id,
             document.getElementById("txtDetPaso").value
           );
+          saveRecetario();
           getPasos(id, objDestino, bModDel);
+          alert("Paso Agregado");
         });
       });
       btnMod.addEventListener("click", () => {
@@ -463,7 +473,9 @@ function getPasos(id, objDestino, bModDel) {
             paso.id,
             document.getElementById("txtDetPaso").value
           );
+          saveRecetario();
           getPasos(id, objDestino, bModDel);
+          alert("Paso Modificado");
         });
       });
       btnDel.addEventListener("click", () => {
