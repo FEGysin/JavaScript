@@ -45,9 +45,7 @@ class Receta {
     });
     this.ingredientes.splice(index, 1);
     for (let ingrediente of this.ingredientes) {
-      if (ingrediente.id >= id) {
-        ingrediente.id -= 1;
-      }
+      ingrediente.id >= id && ingrediente.id--;
     }
     this.ingredientes.sort(function (a, b) {
       return a.id - b.id;
@@ -66,9 +64,7 @@ class Receta {
       this.pasos.push(nwPaso);
     } else {
       for (let paso of this.pasos) {
-        if (paso.id >= id) {
-          paso.id += 1;
-        }
+        paso.id >= id && paso.id++;
       }
       const nwPaso = new Paso(id, detPaso);
       this.pasos.push(nwPaso);
@@ -89,9 +85,7 @@ class Receta {
     });
     this.pasos.splice(index, 1);
     for (let paso of this.pasos) {
-      if (paso.id >= id) {
-        paso.id -= 1;
-      }
+      paso.id >= id && paso.id--;
     }
     this.pasos.sort(function (a, b) {
       return a.id - b.id;
@@ -117,6 +111,7 @@ getPasos(0, recCardPasos, false);
 
 function getRecetario() {
   let sRes = `\n`;
+
   if (localStorage.getItem(`recetario`)) {
     let recetas = JSON.parse(localStorage.getItem(`recetario`));
     for (const obj of recetas) {
@@ -133,6 +128,7 @@ function getRecetario() {
     nwRecetas();
     saveRecetario();
   }
+
   // console.log(Recetario);
   if (Recetario.length > 0) {
     recetario.innerHTML = ``;
@@ -386,7 +382,7 @@ function getIngredientes(id, objDestino, bModDel) {
       //</button>
       nwIngredItem.addEventListener("click", () => {
         curIngrediente = ingrediente.id - 1;
-        console.log(curIngrediente);
+        // console.log(curIngrediente);
       });
       objDestino.appendChild(nwIngredItem);
       //let btnAdd = document.getElementById(`btnAddIng${ingrediente.id}`);
