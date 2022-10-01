@@ -27,9 +27,7 @@ class Receta {
       this.ingredientes.push(nwIngrediente);
     } else {
       for (let ingrediente of this.ingredientes) {
-        if (ingrediente.id >= id) {
-          ingrediente.id += 1;
-        }
+        ingrediente.id >= id && ingrediente.id++;
       }
       const nwIngrediente = new Ingrediente(id, producto, cantidad);
       this.ingredientes.push(nwIngrediente);
@@ -505,50 +503,50 @@ function getPasos(id, objDestino, bModDel) {
 btnRecetaAdd.addEventListener("click", () => {
   //modalAdd.appendChild();
 });
-function getOpc() {
-  let res = parseInt(
-    prompt(`Seleccione una Opcion:
-    1-Agregar Receta
-    2-Modificar Receta
-    3-Eliminar Receta
-    4-Mostrar Recetario
-    5-Ver Receta
-    0-Salir`)
-  );
-  return res;
-}
+// `function getOpc() {
+//   let res = parseInt(
+//     prompt(`Seleccione una Opcion:
+//     1-Agregar Receta
+//     2-Modificar Receta
+//     3-Eliminar Receta
+//     4-Mostrar Recetario
+//     5-Ver Receta
+//     0-Salir`)
+//   );
+//   return res;
+// }`
 
-function menu() {
-  let res = getOpc();
-  if (isNaN(res)) {
-    res = 0;
-  }
-  switch (res) {
-    case 1:
-      addReceta();
-      break;
-    case 2:
-      modReceta();
-      break;
-    case 3:
-      delReceta();
-      break;
-    case 4:
-      verRecetario();
-      break;
-    case 5:
-      verReceta();
-      break;
-    case 0:
-      alert(`Gracias por su Visita
-        Que Tenga un Buen Día`);
-      bSalir = true;
-      break;
-    default:
-      alert("Seleccione una opcion Válida");
-      break;
-  }
-}
+// function menu() {
+//   let res = getOpc();
+//   if (isNaN(res)) {
+//     res = 0;
+//   }
+//   switch (res) {
+//     case 1:
+//       addReceta();
+//       break;
+//     case 2:
+//       modReceta();
+//       break;
+//     case 3:
+//       delReceta();
+//       break;
+//     case 4:
+//       verRecetario();
+//       break;
+//     case 5:
+//       verReceta();
+//       break;
+//     case 0:
+//       alert(`Gracias por su Visita
+//         Que Tenga un Buen Día`);
+//       bSalir = true;
+//       break;
+//     default:
+//       alert("Seleccione una opcion Válida");
+//       break;
+//   }
+// }
 
 function addReceta() {
   let nomReceta = prompt("Ingrese Nombre de la Receta");
@@ -602,9 +600,7 @@ function addReceta() {
 function delReceta(index) {
   Recetario.splice(index, 1);
   for (let receta of Recetario) {
-    if (receta.id >= res) {
-      receta.id -= 1;
-    }
+    receta.id >= res && receta.id--;
   }
   Recetario.sort(function (a, b) {
     return a.id - b.id;
