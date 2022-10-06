@@ -181,10 +181,10 @@ function getRecetario() {
             text: `¿Desea Eliminar la Receta ${recetas.nombre} ?`,
             showCloseButton: "true",
             showDenyButton: "true",
-            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-            confirmButtonAriaLabel: "thumbs-up, Aceptar",
-            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-            denyButtonAriaLabel: "thumbs-down, Rechaza",
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+            confirmButtonAriaLabel: "Thumbs up, Aceptar",
+            denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+            denyButtonAriaLabel: "Thumbs down, Rechazar",
           })
           .then((res) => {
             if (res.isConfirmed) {
@@ -194,9 +194,9 @@ function getRecetario() {
                   text: "¿Ralmente desea Eliminar?",
                   showDenyButton: "true",
                   confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
-                  confirmButtonAriaLabel: "thumbs-up, Si",
+                  confirmButtonAriaLabel: "Thumbs-up, Si",
                   denyButtonText: "<i class=fa fa-thumbs-down></i> No",
-                  denyButtonAriaLabel: "thumbs-down, No",
+                  denyButtonAriaLabel: "Thumbs-down, No",
                 })
                 .then((res) => {
                   if (res.isConfirmed) {
@@ -441,10 +441,10 @@ function getIngredientes(id, objDestino, bModDel) {
               text: `¿Desea Modificar la Cantidad de ${ingrediente.producto} ?`,
               showCloseButton: "true",
               showDenyButton: "true",
-              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-              confirmButtonAriaLabel: "thumbs-up, Aceptar",
-              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-              denyButtonAriaLabel: "thumbs-down, Rechaza",
+              confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+              confirmButtonAriaLabel: "Thumbs up, Aceptar",
+              denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+              denyButtonAriaLabel: "Thumbs down, Rechazar",
             })
             .then((res) => {
               if (res.isConfirmed) {
@@ -488,10 +488,10 @@ function getIngredientes(id, objDestino, bModDel) {
             text: `¿Desea Eliminar el Ingrediente ${ingrediente.producto} ?`,
             showCloseButton: "true",
             showDenyButton: "true",
-            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-            confirmButtonAriaLabel: "thumbs-up, Aceptar",
-            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-            denyButtonAriaLabel: "thumbs-down, Rechaza",
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+            confirmButtonAriaLabel: "Thumbs up, Aceptar",
+            denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+            denyButtonAriaLabel: "Thumbs down, Rechazar",
           })
           .then((res) => {
             if (res.isConfirmed) {
@@ -576,10 +576,10 @@ function getPasos(id, objDestino, bModDel) {
               text: `¿Desea Insertar un Paso Previo al Nro ${paso.id} ?`,
               showCloseButton: "true",
               showDenyButton: "true",
-              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-              confirmButtonAriaLabel: "thumbs-up, Aceptar",
-              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-              denyButtonAriaLabel: "thumbs-down, Rechaza",
+              confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+              confirmButtonAriaLabel: "Thumbs up, Aceptar",
+              denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+              denyButtonAriaLabel: "Thumbs down, Rechazar",
             })
             .then((res) => {
               if (res.isConfirmed) {
@@ -631,10 +631,10 @@ function getPasos(id, objDestino, bModDel) {
               text: `¿Desea Modificar el Paso Nro ${paso.id} ?`,
               showCloseButton: "true",
               showDenyButton: "true",
-              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-              confirmButtonAriaLabel: "thumbs-up, Aceptar",
-              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-              denyButtonAriaLabel: "thumbs-down, Rechaza",
+              confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+              confirmButtonAriaLabel: "Thumbs up, Aceptar",
+              denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+              denyButtonAriaLabel: "Thumbs down, Rechazar",
             })
             .then((res) => {
               if (res.isConfirmed) {
@@ -677,10 +677,10 @@ function getPasos(id, objDestino, bModDel) {
             text: `¿Desea Eliminar el Paso ${paso.id} ?`,
             showCloseButton: "true",
             showDenyButton: "true",
-            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
-            confirmButtonAriaLabel: "thumbs-up, Aceptar",
-            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
-            denyButtonAriaLabel: "thumbs-down, Rechaza",
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+            confirmButtonAriaLabel: "Thumbs up, Aceptar",
+            denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+            denyButtonAriaLabel: "Thumbs down, Rechazar",
           })
           .then((res) => {
             if (res.isConfirmed) {
