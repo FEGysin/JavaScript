@@ -174,8 +174,44 @@ function getRecetario() {
 
       let btnDel = document.getElementById(`btnDelRec${recetas.id}`);
       btnDel.addEventListener("click", () => {
-        delReceta(recetas.id - 1);
-        getRecetario();
+        swal
+          .fire({
+            icon: "confirm",
+            title: `Confirme Eliminacion`,
+            text: `¿Desea Eliminar la Receta ${recetas.nombre} ?`,
+            showCloseButton: "true",
+            showDenyButton: "true",
+            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+            confirmButtonAriaLabel: "thumbs-up, Aceptar",
+            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+            denyButtonAriaLabel: "thumbs-down, Rechaza",
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              swal
+                .fire({
+                  icon: "",
+                  text: "¿Ralmente desea Eliminar?",
+                  showDenyButton: "true",
+                  confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                  confirmButtonAriaLabel: "thumbs-up, Si",
+                  denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                  denyButtonAriaLabel: "thumbs-down, No",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    delReceta(recetas.id - 1);
+                    saveRecetario();
+                    getRecetario();
+                    swal.fire("Eliminacion Realizada", "", "success");
+                  } else {
+                    swal.fire("Eliminacion Rechazada", "", "info");
+                  }
+                });
+            } else if (res.isDenied) {
+              swal.fire("Eliminacion Rechazada", "", "info");
+            }
+          });
       });
       recetario.appendChild(nwRecetaItem);
     }
@@ -398,21 +434,93 @@ function getIngredientes(id, objDestino, bModDel) {
         </div>`;
         modalAdd.appendChild(ingModal);
         btnSave.addEventListener("click", () => {
-          console.log(document.getElementById("txtIngCant").value);
-          Recetario[id].modIngrediente(
-            ingrediente.id,
-            document.getElementById("txtIngCant").value
-          );
-          saveRecetario();
-          getIngredientes(id, objDestino, bModDel);
-          alert("Ingrediente Modificado");
+          swal
+            .fire({
+              icon: "confirm",
+              title: `Confirme Modificacion`,
+              text: `¿Desea Modificar la Cantidad de ${ingrediente.producto} ?`,
+              showCloseButton: "true",
+              showDenyButton: "true",
+              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+              confirmButtonAriaLabel: "thumbs-up, Aceptar",
+              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+              denyButtonAriaLabel: "thumbs-down, Rechaza",
+            })
+            .then((res) => {
+              if (res.isConfirmed) {
+                swal
+                  .fire({
+                    icon: "",
+                    text: "¿Ralmente desea Modificar?",
+                    //showCloseButton:"false",
+                    showDenyButton: "true",
+                    confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                    confirmButtonAriaLabel: "thumbs-up, Si",
+                    denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                    denyButtonAriaLabel: "thumbs-down, No",
+                  })
+                  .then((res) => {
+                    if (res.isConfirmed) {
+                      Recetario[id].modIngrediente(
+                        ingrediente.id,
+                        document.getElementById("txtIngCant").value
+                      );
+                      saveRecetario();
+                      getIngredientes(id, objDestino, bModDel);
+                      swal.fire("Modificacion Realizada", "", "success");
+                    } else {
+                      swal.fire("Modificacion Rechazada", "", "info");
+                    }
+                  });
+              } else if (res.isDenied) {
+                swal.fire("Modificacion Rechazada", "", "info");
+              }
+            });
+          // saveRecetario();
+          // getIngredientes(id, objDestino, bModDel);
         });
       });
       btnDel.addEventListener("click", () => {
-        Recetario[id].delIngrediente(ingrediente.id);
-        objDestino.innerHTML = "";
-        getIngredientes(id, objDestino, bModDel);
-        alert("Ingrediente Eliminado");
+        swal
+          .fire({
+            icon: "confirm",
+            title: `Confirme Eliminacion`,
+            text: `¿Desea Eliminar el Ingrediente ${ingrediente.producto} ?`,
+            showCloseButton: "true",
+            showDenyButton: "true",
+            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+            confirmButtonAriaLabel: "thumbs-up, Aceptar",
+            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+            denyButtonAriaLabel: "thumbs-down, Rechaza",
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              swal
+                .fire({
+                  icon: "",
+                  text: "¿Realmente desea Eliminarlo?",
+                  //showCloseButton:"false",
+                  showDenyButton: "true",
+                  confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                  confirmButtonAriaLabel: "thumbs-up, Si",
+                  denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                  denyButtonAriaLabel: "thumbs-down, No",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].delIngrediente(ingrediente.id);
+                    objDestino.innerHTML = "";
+                    saveRecetario();
+                    getIngredientes(id, objDestino, bModDel);
+                    swal.fire("Ingrediente Eliminado", "", "success");
+                  } else {
+                    swal.fire("Eliminacion Rechazada", "", "info");
+                  }
+                });
+            } else if (res.isDenied) {
+              swal.fire("Eliminacion Rechazada", "", "info");
+            }
+          });
       });
       objDestino.appendChild(nwIngredItem);
     }
@@ -461,13 +569,49 @@ function getPasos(id, objDestino, bModDel) {
         </div>`;
         modalAdd.appendChild(ingModal);
         btnSave.addEventListener("click", () => {
-          Recetario[id].addPaso(
-            paso.id,
-            document.getElementById("txtDetPaso").value
-          );
-          saveRecetario();
-          getPasos(id, objDestino, bModDel);
-          alert("Paso Agregado");
+          swal
+            .fire({
+              icon: "confirm",
+              title: `Confirme Nuevo Paso`,
+              text: `¿Desea Insertar un Paso Previo al Nro ${paso.id} ?`,
+              showCloseButton: "true",
+              showDenyButton: "true",
+              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+              confirmButtonAriaLabel: "thumbs-up, Aceptar",
+              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+              denyButtonAriaLabel: "thumbs-down, Rechaza",
+            })
+            .then((res) => {
+              if (res.isConfirmed) {
+                swal
+                  .fire({
+                    icon: "",
+                    text: "¿Ralmente desea insertar el Paso?",
+                    //showCloseButton:"false",
+                    showDenyButton: "true",
+                    confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                    confirmButtonAriaLabel: "thumbs-up, Si",
+                    denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                    denyButtonAriaLabel: "thumbs-down, No",
+                  })
+                  .then((res) => {
+                    if (res.isConfirmed) {
+                      Recetario[id].addPaso(
+                        paso.id,
+                        document.getElementById("txtDetPaso").value
+                      );
+                      saveRecetario();
+                      getPasos(id, objDestino, bModDel);
+
+                      swal.fire("Paso Agregado", "", "success");
+                    } else {
+                      swal.fire("Insercion Rechazada", "", "info");
+                    }
+                  });
+              } else if (res.isDenied) {
+                swal.fire("Insercion Rechazada", "", "info");
+              }
+            });
         });
       });
       btnMod.addEventListener("click", () => {
@@ -480,20 +624,91 @@ function getPasos(id, objDestino, bModDel) {
         </div>`;
         modalAdd.appendChild(ingModal);
         btnSave.addEventListener("click", () => {
-          Recetario[id].modPaso(
-            paso.id,
-            document.getElementById("txtDetPaso").value
-          );
-          saveRecetario();
-          getPasos(id, objDestino, bModDel);
-          alert("Paso Modificado");
+          swal
+            .fire({
+              icon: "confirm",
+              title: `Confirme Modificacion`,
+              text: `¿Desea Modificar el Paso Nro ${paso.id} ?`,
+              showCloseButton: "true",
+              showDenyButton: "true",
+              confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+              confirmButtonAriaLabel: "thumbs-up, Aceptar",
+              denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+              denyButtonAriaLabel: "thumbs-down, Rechaza",
+            })
+            .then((res) => {
+              if (res.isConfirmed) {
+                swal
+                  .fire({
+                    icon: "",
+                    text: "¿Realmente desea Modificar?",
+                    //showCloseButton:"false",
+                    showDenyButton: "true",
+                    confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                    confirmButtonAriaLabel: "thumbs-up, Si",
+                    denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                    denyButtonAriaLabel: "thumbs-down, No",
+                  })
+                  .then((res) => {
+                    if (res.isConfirmed) {
+                      Recetario[id].modPaso(
+                        paso.id,
+                        document.getElementById("txtDetPaso").value
+                      );
+
+                      saveRecetario();
+                      getPasos(id, objDestino, bModDel);
+                      swal.fire("Modificacion Realizada", "", "success");
+                    } else {
+                      swal.fire("Modificacion Rechazada", "", "info");
+                    }
+                  });
+              } else if (res.isDenied) {
+                swal.fire("Modificacion Rechazada", "", "info");
+              }
+            });
         });
       });
       btnDel.addEventListener("click", () => {
-        Recetario[id].delPaso(paso.id);
-        objDestino.innerHTML = "";
-        getPasos(id, objDestino, bModDel);
-        alert("Paso Eliminado");
+        swal
+          .fire({
+            icon: "confirm",
+            title: `Confirme Eliminacion`,
+            text: `¿Desea Eliminar el Paso ${paso.id} ?`,
+            showCloseButton: "true",
+            showDenyButton: "true",
+            confirmButtonText: "<i class=fa fa-thumbs-up></i> Aceptar",
+            confirmButtonAriaLabel: "thumbs-up, Aceptar",
+            denyButtonText: "<i class=fa fa-thumbs-down></i> Rechaza",
+            denyButtonAriaLabel: "thumbs-down, Rechaza",
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              swal
+                .fire({
+                  icon: "",
+                  text: "¿Ralmente desea Eliminar?",
+                  //showCloseButton:"false",
+                  showDenyButton: "true",
+                  confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
+                  confirmButtonAriaLabel: "thumbs-up, Si",
+                  denyButtonText: "<i class=fa fa-thumbs-down></i> No",
+                  denyButtonAriaLabel: "thumbs-down, No",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].delPaso(paso.id);
+                    objDestino.innerHTML = "";
+                    getPasos(id, objDestino, bModDel);
+                    swal.fire("Modificacion Realizada", "", "success");
+                  } else {
+                    swal.fire("Modificacion Rechazada", "", "info");
+                  }
+                });
+            } else if (res.isDenied) {
+              swal.fire("Modificacion Rechazada", "", "info");
+            }
+          });
       });
       objDestino.appendChild(nwPasoItem);
     }
@@ -503,50 +718,6 @@ function getPasos(id, objDestino, bModDel) {
 btnRecetaAdd.addEventListener("click", () => {
   //modalAdd.appendChild();
 });
-// `function getOpc() {
-//   let res = parseInt(
-//     prompt(`Seleccione una Opcion:
-//     1-Agregar Receta
-//     2-Modificar Receta
-//     3-Eliminar Receta
-//     4-Mostrar Recetario
-//     5-Ver Receta
-//     0-Salir`)
-//   );
-//   return res;
-// }`
-
-// function menu() {
-//   let res = getOpc();
-//   if (isNaN(res)) {
-//     res = 0;
-//   }
-//   switch (res) {
-//     case 1:
-//       addReceta();
-//       break;
-//     case 2:
-//       modReceta();
-//       break;
-//     case 3:
-//       delReceta();
-//       break;
-//     case 4:
-//       verRecetario();
-//       break;
-//     case 5:
-//       verReceta();
-//       break;
-//     case 0:
-//       alert(`Gracias por su Visita
-//         Que Tenga un Buen Día`);
-//       bSalir = true;
-//       break;
-//     default:
-//       alert("Seleccione una opcion Válida");
-//       break;
-//   }
-// }
 
 function addReceta() {
   let nomReceta = prompt("Ingrese Nombre de la Receta");
@@ -594,7 +765,6 @@ function addReceta() {
   Recetario.push(nwRecipe);
 
   console.log(nwRecipe);
-  alert("La Receta fue Agregada del Recetario");
 }
 
 function delReceta(index) {
@@ -605,7 +775,6 @@ function delReceta(index) {
   Recetario.sort(function (a, b) {
     return a.id - b.id;
   });
-  alert("La Receta Fue Eliminada del Recetario");
 }
 
 function clearCard() {
