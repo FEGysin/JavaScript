@@ -1,0 +1,306 @@
+[
+    {
+        "id": 1,
+        "nombre": "Berenjenas",
+        "ingredientes": [
+            {
+                "id": 1,
+                "producto": "Berenjenas",
+                "cantidad": "3"
+            },
+            {
+                "id": 2,
+                "producto": "Agua",
+                "cantidad": "300cc"
+            },
+            {
+                "id": 3,
+                "producto": "Vinagre de Vino",
+                "cantidad": "300cc"
+            },
+            {
+                "id": 4,
+                "producto": "Vinagre de Alcohol",
+                "cantidad": "300cc"
+            },
+            {
+                "id": 5,
+                "producto": "Sal",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 6,
+                "producto": "Dientes de Ajo",
+                "cantidad": "4"
+            },
+            {
+                "id": 7,
+                "producto": "Pimienta en Grano",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 8,
+                "producto": "Ají Molido",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 9,
+                "producto": "Aceite de Girasol",
+                "cantidad": "c/n"
+            }
+        ],
+        "pasos": [
+            {
+                "id": 1,
+                "detPaso": "Pelar las Berenjenas y cortarlas en rodajas de 2 cm aproximadamente"
+            },
+            {
+                "id": 2,
+                "detPaso": "Colocar las Berenjenas contadas en agua y sal por 30 minutos"
+            },
+            {
+                "id": 3,
+                "detPaso": "Colocar las Berenjenas contadas en agua y sal por 30 minutos"
+            },
+            {
+                "id": 4,
+                "detPaso": "Colar las Berenjenas y ponerlas a hervir con el Agua y los 2 Vinagres y Sal a Gusto"
+            },
+            {
+                "id": 5,
+                "detPaso": "Pelar y cortar el ajo"
+            },
+            {
+                "id": 6,
+                "detPaso": "Dejar Hervir hasta que las Berenjenas se puedan pinchar fácilmente"
+            },
+            {
+                "id": 7,
+                "detPaso": "Colar las Berenjenas reservando parte del Liquido de Cocción"
+            },
+            {
+                "id": 8,
+                "detPaso": "En un frasco de Vidrio coloque las Berenjenas hasta hacer un piso"
+            },
+            {
+                "id": 9,
+                "detPaso": "Agregue una pizca del Ajo, una Pizca de Ají Molido y unos Granos de Pimienta Negra"
+            },
+            {
+                "id": 10,
+                "detPaso": "Repita los últimos 2 pasos hasta llegar casi al borde del frasco"
+            },
+            {
+                "id": 11,
+                "detPaso": "Una Vez Terminado agregue liquido de Cocción hasta la mitad y complete con aceite hasta tapar las berenjenas "
+            },
+            {
+                "id": 12,
+                "detPaso": "Reservar en Heladera 1 día para que asienten los sabores"
+            },
+            {
+                "id": 13,
+                "detPaso": "Disfrútelas !!!"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nombre": "Morrones con Ajo",
+        "ingredientes": [
+            {
+                "id": 1,
+                "producto": "Morrones Rojo",
+                "cantidad": "4"
+            },
+            {
+                "id": 2,
+                "producto": "Dientes de Ajo",
+                "cantidad": "4"
+            },
+            {
+                "id": 3,
+                "producto": "Sal",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 4,
+                "producto": "Aceite de Girasol",
+                "cantidad": "c/n"
+            }
+        ],
+        "pasos": [
+            {
+                "id": 1,
+                "detPaso": "Al seleccionar los morrones fíjese que tengas las caras parejas"
+            },
+            {
+                "id": 2,
+                "detPaso": "Lave los Morrones y séquelos"
+            },
+            {
+                "id": 3,
+                "detPaso": "Acéitese las manos, aceite los morrones y colóquelos en una Bandeja para Horno"
+            },
+            {
+                "id": 4,
+                "detPaso": "Prenda el Horno y déjelo Calentar"
+            },
+            {
+                "id": 5,
+                "detPaso": "Coloque los Morrones en el Horno girándolos cada tanto para que las caras se cocinen parejas"
+            },
+            {
+                "id": 6,
+                "detPaso": "Cuando la piel este bien dorada y los morrones ya se perciban cocidos, retírelos del Horno"
+            },
+            {
+                "id": 7,
+                "detPaso": "Coloque los Morrones en un recipiente, hágale un corte y envuélvalo con una Bolsa plástica"
+            },
+            {
+                "id": 8,
+                "detPaso": "Deje Reposar hasta que entibien"
+            },
+            {
+                "id": 9,
+                "detPaso": "Saque de a uno los Morrones, retírele la piel el cabo y las semillas dejando solamente la carne del Morrón"
+            },
+            {
+                "id": 10,
+                "detPaso": "Corte los Morrones y colóquelos nuevamente en el jugo que quedo en el recipiente"
+            },
+            {
+                "id": 11,
+                "detPaso": "Agregue el ajo previamente picado y sal a gusto"
+            },
+            {
+                "id": 12,
+                "detPaso": "En un frasco de Vidrio coloque la Preparación."
+            },
+            {
+                "id": 13,
+                "detPaso": "Complete con aceite hasta tapar los Morrones"
+            },
+            {
+                "id": 14,
+                "detPaso": "Reservar en Heladera 1 día para que asienten los sabores"
+            },
+            {
+                "id": 15,
+                "detPaso": "Disfrútelos !!!"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nombre": "Pan de Carne",
+        "ingredientes": [
+            {
+                "id": 1,
+                "producto": "Carne Picada",
+                "cantidad": "500gr"
+            },
+            {
+                "id": 2,
+                "producto": "Fetas de Jamón Cocido",
+                "cantidad": "5"
+            },
+            {
+                "id": 3,
+                "producto": "Fetas de Queso de Barra",
+                "cantidad": "5"
+            },
+            {
+                "id": 4,
+                "producto": "Huevos",
+                "cantidad": "2"
+            },
+            {
+                "id": 5,
+                "producto": "Pan Rallado",
+                "cantidad": "150gr"
+            },
+            {
+                "id": 6,
+                "producto": "Dientes de Ajo",
+                "cantidad": "2"
+            },
+            {
+                "id": 7,
+                "producto": "Pimienta",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 8,
+                "producto": "Aji Molido",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 9,
+                "producto": "Sal",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 10,
+                "producto": "Moztaza",
+                "cantidad": "c/n"
+            },
+            {
+                "id": 11,
+                "producto": "Aceite de Girasol",
+                "cantidad": "c/n"
+            }
+        ],
+        "pasos": [
+            {
+                "id": 1,
+                "detPaso": "Pique los dientes de Ajo"
+            },
+            {
+                "id": 2,
+                "detPaso": "Bata los Huevos y añada Pimienta, Ají Molido y Sal a Gusto"
+            },
+            {
+                "id": 3,
+                "detPaso": "Mezcle la carne picada con los huevos sazonados y el Pan rallado"
+            },
+            {
+                "id": 4,
+                "detPaso": "Sobre un Film o un Paño limpio espolvoree un poco de Pan rallado"
+            },
+            {
+                "id": 5,
+                "detPaso": "Vierta la Mezcla sobre el paño dándole forma rectangular de aproximadamente 1 cm de alto"
+            },
+            {
+                "id": 6,
+                "detPaso": "Pincele con un poco de Mostaza el rectángulo de carne picada"
+            },
+            {
+                "id": 7,
+                "detPaso": "Distribuya el jamón cocido y luego el queso sobre la carne picada"
+            },
+            {
+                "id": 8,
+                "detPaso": "Arrolle la preparación y forma un cilindro"
+            },
+            {
+                "id": 9,
+                "detPaso": "Aceite la base de una Bandeja para Horno y coloque el pan de carne"
+            },
+            {
+                "id": 10,
+                "detPaso": "Pincele nuevamente con mostaza"
+            },
+            {
+                "id": 11,
+                "detPaso": "Coloque la bandeja en el Horno y cocine por aproximadamente 45 minutos (puede rotar la preparación para una cocción más pareja)"
+            },
+            {
+                "id": 12,
+                "detPaso": "Retire del Horno córtelo en rodajas y Disfrute"
+            }
+        ]
+    }
+]

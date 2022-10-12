@@ -9,7 +9,6 @@ let modalAdd = document.getElementById("modalBody");
 let btnRecetaAdd = document.getElementById("addReceta");
 let btnSave = document.getElementById("btnSave");
 let Recetario = [];
-
 class Receta {
   constructor(id, nombre, ingredientes = [], pasos = []) {
     (this.id = id),
@@ -123,8 +122,25 @@ function getRecetario() {
       Recetario.push(nwReceta);
     }
   } else {
-    nwRecetas();
-    saveRecetario();
+    fetch("./recursos/misRecetas.json")
+      .then((res) => {
+        return res.json();
+      })
+      .then((recetas) => {
+        for (const obj of recetas) {
+          // console.log(obj);
+          let nwReceta = new Receta(
+            obj.id,
+            obj.nombre,
+            obj.ingredientes,
+            obj.pasos
+          );
+          Recetario.push(nwReceta);
+        }
+        console.log(Recetario);
+        //nwRecetas();
+        saveRecetario();
+      });
   }
 
   // console.log(Recetario);
@@ -375,7 +391,8 @@ function nwRecetas() {
 }
 
 function saveRecetario() {
-  localStorage.setItem(`recetario`, JSON.stringify(Recetario));
+  const data = JSON.stringify(Recetario);
+  localStorage.setItem(`recetario`, data);
 }
 
 function getIngredientes(id, objDestino, bModDel) {
