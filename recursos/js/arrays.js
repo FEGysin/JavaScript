@@ -9,96 +9,6 @@ let modalAdd = document.getElementById("modalBody");
 let btnRecetaAdd = document.getElementById("addReceta");
 let btnSave = document.getElementById("btnSave");
 let Recetario = [];
-class Receta {
-  constructor(id, nombre, ingredientes = [], pasos = []) {
-    (this.id = id),
-      (this.nombre = nombre),
-      (this.ingredientes = ingredientes),
-      (this.pasos = pasos);
-  }
-  addIngrediente(id, producto, cantidad) {
-    if (id == 0) {
-      const nwIngrediente = new Ingrediente(
-        this.ingredientes.length + 1,
-        producto,
-        cantidad
-      );
-      this.ingredientes.push(nwIngrediente);
-    } else {
-      for (let ingrediente of this.ingredientes) {
-        ingrediente.id >= id && ingrediente.id++;
-      }
-      const nwIngrediente = new Ingrediente(id, producto, cantidad);
-      this.ingredientes.push(nwIngrediente);
-      this.ingredientes.sort(function (a, b) {
-        return a.id - b.id;
-      });
-    }
-  }
-
-  delIngrediente(id) {
-    let index = this.ingredientes.findIndex((ingrediente) => {
-      return ingrediente.id == id;
-    });
-    this.ingredientes.splice(index, 1);
-    for (let ingrediente of this.ingredientes) {
-      ingrediente.id >= id && ingrediente.id--;
-    }
-    this.ingredientes.sort(function (a, b) {
-      return a.id - b.id;
-    });
-  }
-  modIngrediente(id, cant) {
-    let index = this.ingredientes.findIndex((ingrediente) => {
-      return ingrediente.id == id;
-    });
-    this.ingredientes[index].cantidad = cant;
-  }
-
-  addPaso(id, detPaso) {
-    if (id == 0) {
-      const nwPaso = new Paso(this.pasos.length + 1, detPaso);
-      this.pasos.push(nwPaso);
-    } else {
-      for (let paso of this.pasos) {
-        paso.id >= id && paso.id++;
-      }
-      const nwPaso = new Paso(id, detPaso);
-      this.pasos.push(nwPaso);
-      this.pasos.sort(function (a, b) {
-        return a.id - b.id;
-      });
-    }
-  }
-  modPaso(id, detPaso) {
-    let index = this.pasos.findIndex((paso) => {
-      return paso.id == id;
-    });
-    this.pasos[index].detPaso = detPaso;
-  }
-  delPaso(id) {
-    let index = this.pasos.findIndex((paso) => {
-      return paso.id == id;
-    });
-    this.pasos.splice(index, 1);
-    for (let paso of this.pasos) {
-      paso.id >= id && paso.id--;
-    }
-    this.pasos.sort(function (a, b) {
-      return a.id - b.id;
-    });
-  }
-}
-class Ingrediente {
-  constructor(id, producto, cantidad) {
-    (this.id = id), (this.producto = producto), (this.cantidad = cantidad);
-  }
-}
-class Paso {
-  constructor(id, detPaso) {
-    (this.id = id), (this.detPaso = detPaso);
-  }
-}
 
 //nwRecetas();
 getRecetario();
@@ -151,12 +61,12 @@ function getRecetario() {
       let nwRecetaItem = document.createElement("a");
       nwRecetaItem.innerHTML = `
           <a id=rec"${recetas.id}"
-            class="list-group-item py-3 lh-sm mt-2 p-0">
-            <div>
-              <img src="../recursos/img/comida.jpg" alt="imgComidas" style="width=80%" />
+            class="list-group-item col-11  py-1 lh-sm mt-2 p-0">
+            <div class="m-1 row d-flex justify-content-center">
+              <img class="m-2" src="../recursos/img/comida.jpg" alt="imgComidas"/>
             </div>
             <div
-              class="d-flex w-100 justify-content-between text-center">
+              class="m-1 w-80 text-center">
                 <strong class="mb-1">${recetas.nombre}</strong>
             </div>
           </a>`;
@@ -169,7 +79,7 @@ function getRecetario() {
       recetario.appendChild(nwRecetaItem);
 
       nwRecetaItem = document.createElement("div");
-      nwRecetaItem.innerHTML = `<div>
+      nwRecetaItem.innerHTML = `<div class="col-10">
         <div class="row justify-content-end">
           <button id="btnModRec${recetas.id}" class="btnMod btn btn-success">
             <i class="bi bi-pen-fill"></i>
@@ -209,10 +119,10 @@ function getRecetario() {
                   icon: "",
                   text: "¿Ralmente desea Eliminar?",
                   showDenyButton: "true",
-                  confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
-                  confirmButtonAriaLabel: "Thumbs-up, Si",
-                  denyButtonText: "<i class=fa fa-thumbs-down></i> No",
-                  denyButtonAriaLabel: "Thumbs-down, No",
+                  confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
+                  confirmButtonAriaLabel: "Thumbs up, Si",
+                  denyButtonText: '<i class="fa fa-thumbs-down"></i> No',
+                  denyButtonAriaLabel: "Thumbs down, No",
                 })
                 .then((res) => {
                   if (res.isConfirmed) {
@@ -471,10 +381,10 @@ function getIngredientes(id, objDestino, bModDel) {
                     text: "¿Ralmente desea Modificar?",
                     //showCloseButton:"false",
                     showDenyButton: "true",
-                    confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
-                    confirmButtonAriaLabel: "thumbs-up, Si",
-                    denyButtonText: "<i class=fa fa-thumbs-down></i> No",
-                    denyButtonAriaLabel: "thumbs-down, No",
+                    confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
+                    confirmButtonAriaLabel: "Thumbs up, Si",
+                    denyButtonText: '<i class="fa fa-thumbs-down"></i> No',
+                    denyButtonAriaLabel: "thumbs down, No",
                   })
                   .then((res) => {
                     if (res.isConfirmed) {
@@ -518,10 +428,10 @@ function getIngredientes(id, objDestino, bModDel) {
                   text: "¿Realmente desea Eliminarlo?",
                   //showCloseButton:"false",
                   showDenyButton: "true",
-                  confirmButtonText: "<i class=fa fa-thumbs-up></i> Si",
-                  confirmButtonAriaLabel: "thumbs-up, Si",
-                  denyButtonText: "<i class=fa fa-thumbs-down></i> No",
-                  denyButtonAriaLabel: "thumbs-down, No",
+                  confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
+                  confirmButtonAriaLabel: "Thumbs up, Si",
+                  denyButtonText: '<i class="fa fa-thumbs-down"></i> No',
+                  denyButtonAriaLabel: "Thumbs down, No",
                 })
                 .then((res) => {
                   if (res.isConfirmed) {
