@@ -102,7 +102,7 @@ function getRecetario() {
       btnDel.addEventListener("click", () => {
         swal
           .fire({
-            icon: "confirm",
+            icon: "question",
             title: `Confirme Eliminacion`,
             text: `¿Desea Eliminar la Receta ${recetas.nombre} ?`,
             showCloseButton: "true",
@@ -306,12 +306,8 @@ function saveRecetario() {
 }
 
 function getIngredientes(id, objDestino, bModDel) {
-  //let sRes = `\n`;
-  // console.log(`Get Ingredientes ${bModDel}`);
   recCardIngredientes.innerHTML = "";
   for (let ingrediente of Recetario[id].ingredientes) {
-    //  sRes += `${ingrediente.id} - ${ingrediente.producto}  ${ingrediente.cantidad}\n`;
-    //agregar item al recCardIngredientes
     let nwIngredItem = document.createElement("a");
     if (bModDel == false) {
       nwIngredItem.innerHTML = `
@@ -330,6 +326,9 @@ function getIngredientes(id, objDestino, bModDel) {
         <div class="col-3">${ingrediente.cantidad}</div>
       </div>  
         <div class="row justify-content-end">
+          <button id="btnAddIng${ingrediente.id}" class="btnMod btn btn-success" data-bs-toggle="modal" data-bs-target="#modalRecipe">
+            <i class="bi bi-plus-circle"></i>
+          </button>
           <button id="btnModIng${ingrediente.id}" class="btnMod btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalRecipe">
             <i class="bi bi-pen-fill"></i>
           </button>
@@ -338,18 +337,74 @@ function getIngredientes(id, objDestino, bModDel) {
           </button>
         </div>
     </a>`;
-      //  <button id="btnAddIng${ingrediente.id}" class="btnMod btn btn-success">
-      //  <i class="bi bi-plus-circle"></i>
-      //</button>
+
       nwIngredItem.addEventListener("click", () => {
         curIngrediente = ingrediente.id - 1;
         // console.log(curIngrediente);
       });
       objDestino.appendChild(nwIngredItem);
-      //let btnAdd = document.getElementById(`btnAddIng${ingrediente.id}`);
+      let btnAdd = document.getElementById(`btnAddIng${ingrediente.id}`);
       let btnMod = document.getElementById(`btnModIng${ingrediente.id}`);
       let btnDel = document.getElementById(`btnDelIng${ingrediente.id}`);
-      // btnAdd.addEventListener("click", () => {});
+
+      btnAdd.addEventListener("click", () => {
+        modalAdd.innerHTML = "";
+        lblModalAdd.innerText = "Modificacion Ingrediente";
+        let ingModal = document.createElement(`div`);
+        ingModal.innerHTML = `
+        <div class="d-flex row justify-content-around">
+          <input class="col-5" type="text" name="" id="txtIngrediente" value="">
+          <input class="col-3" type="text" name="" id="txtIngCant" value="">
+        </div>`;
+        modalAdd.appendChild(ingModal);
+
+        btnSave.addEventListener("click", () => {
+          let nwIngrediente = document.getElementById("txtIngrediente");
+          let nwCant = document.getElementById("txtIngCant");
+          swal
+            .fire({
+              icon: "question",
+              title: `Confirme Nuevo Ingrediente`,
+              text: `¿Desea Insertar el Ingrediente ${nwIngrediente.value} por ${nwCant.value} ?`,
+              showCloseButton: "true",
+              showDenyButton: "true",
+              confirmButtonText: '<i class="fa fa-thumbs-up"></i> Aceptar',
+              confirmButtonAriaLabel: "Thumbs up, Aceptar",
+              denyButtonText: '<i class="fa fa-thumbs-down"></i> Rechaza',
+              denyButtonAriaLabel: "Thumbs down, Rechazar",
+            })
+            .then((res) => {
+              if (res.isConfirmed) {
+                swal
+                  .fire({
+                    icon: "",
+                    text: "¿Realmente desea Insertar?",
+                    showDenyButton: "true",
+                    confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
+                    confirmButtonAriaLabel: "Thumbs up, Si",
+                    denyButtonText: '<i class="fa fa-thumbs-down"></i> No',
+                    denyButtonAriaLabel: "thumbs down, No",
+                  })
+                  .then((res) => {
+                    if (res.isConfirmed) {
+                      Recetario[id].addIngrediente(
+                        ingrediente.id,
+                        nwIngrediente.value,
+                        nwCant.value
+                      );
+                      saveRecetario();
+                      getIngredientes(id, objDestino, bModDel);
+                      resABMRecipe("A", true);
+                    } else {
+                      resABMRecipe("A", false);
+                    }
+                  });
+              } else if (res.isDenied) {
+                resABMRecipe("A", false);
+              }
+            });
+        });
+      });
       btnMod.addEventListener("click", () => {
         modalAdd.innerHTML = "";
         lblModalAdd.innerText = "Modificacion Ingrediente";
@@ -363,7 +418,7 @@ function getIngredientes(id, objDestino, bModDel) {
         btnSave.addEventListener("click", () => {
           swal
             .fire({
-              icon: "confirm",
+              icon: "question",
               title: `Confirme Modificacion`,
               text: `¿Desea Modificar la Cantidad de ${ingrediente.producto} ?`,
               showCloseButton: "true",
@@ -378,7 +433,7 @@ function getIngredientes(id, objDestino, bModDel) {
                 swal
                   .fire({
                     icon: "",
-                    text: "¿Ralmente desea Modificar?",
+                    text: "¿Realmente desea Modificar?",
                     //showCloseButton:"false",
                     showDenyButton: "true",
                     confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
@@ -396,11 +451,11 @@ function getIngredientes(id, objDestino, bModDel) {
                       getIngredientes(id, objDestino, bModDel);
                       swal.fire("Modificacion Realizada", "", "success");
                     } else {
-                      swal.fire("Modificacion Rechazada", "", "info");
+                      resABMRecipe("M", false);
                     }
                   });
               } else if (res.isDenied) {
-                swal.fire("Modificacion Rechazada", "", "info");
+                resABMRecipe("M", false);
               }
             });
           // saveRecetario();
@@ -410,7 +465,7 @@ function getIngredientes(id, objDestino, bModDel) {
       btnDel.addEventListener("click", () => {
         swal
           .fire({
-            icon: "confirm",
+            icon: "question",
             title: `Confirme Eliminacion`,
             text: `¿Desea Eliminar el Ingrediente ${ingrediente.producto} ?`,
             showCloseButton: "true",
@@ -439,19 +494,41 @@ function getIngredientes(id, objDestino, bModDel) {
                     objDestino.innerHTML = "";
                     saveRecetario();
                     getIngredientes(id, objDestino, bModDel);
-                    swal.fire("Ingrediente Eliminado", "", "success");
+                    resABMRecipe("B", true);
                   } else {
-                    swal.fire("Eliminacion Rechazada", "", "info");
+                    resABMRecipe("B", false);
                   }
                 });
             } else if (res.isDenied) {
-              swal.fire("Eliminacion Rechazada", "", "info");
+              resABMRecipe("B", false);
             }
           });
       });
       objDestino.appendChild(nwIngredItem);
     }
   }
+}
+
+function resABMRecipe(sTip, bAceptar) {
+  let sMsg = "";
+  switch (sTip.toLowerCase()) {
+    case "a":
+      sMsg = "Insercion " && bAceptar ? "Realizada" : "Rechazada";
+
+      break;
+    case "b":
+      sMsg = "Eliminacion " && bAceptar ? "Realizada" : "Rechazada";
+      break;
+    case "m":
+      sMsg = "Modificacion " && bAceptar ? "Realizada" : "Rechazada";
+      break;
+  }
+
+  swal.fire({
+    text: sMsg,
+    icon: bAceptar ? "success" : "info",
+    timer: 1000,
+  });
 }
 
 function getPasos(id, objDestino, bModDel) {
@@ -469,7 +546,7 @@ function getPasos(id, objDestino, bModDel) {
           <button id="btnAddPas${paso.id}" class="btnMod btn btn-success"  data-bs-toggle="modal" data-bs-target="#modalRecipe">
             <i class="bi bi-plus-circle"></i>
           </button>   
-          <button id="btnModPas${paso.id}" class="btnMod btn btn-secondary data-bs-toggle="modal" data-bs-target="#modalRecipe">
+          <button id="btnModPas${paso.id}" class="btnMod btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalRecipe">
             <i class="bi bi-pen-fill"></i>
           </button>
           <button id="btnDelPas${paso.id}" class="btnDel btn btn-danger">
@@ -477,10 +554,7 @@ function getPasos(id, objDestino, bModDel) {
           </button>
         </div>
       </a>`;
-      nwPasoItem.addEventListener("click", () => {
-        curPaso = paso.id - 1;
-        console.log(curPaso);
-      });
+
       objDestino.appendChild(nwPasoItem);
 
       let btnAdd = document.getElementById(`btnAddPas${paso.id}`);
@@ -498,7 +572,7 @@ function getPasos(id, objDestino, bModDel) {
         btnSave.addEventListener("click", () => {
           swal
             .fire({
-              icon: "confirm",
+              icon: "question",
               title: `Confirme Nuevo Paso`,
               text: `¿Desea Insertar un Paso Previo al Nro ${paso.id} ?`,
               showCloseButton: "true",
@@ -530,13 +604,13 @@ function getPasos(id, objDestino, bModDel) {
                       saveRecetario();
                       getPasos(id, objDestino, bModDel);
 
-                      swal.fire("Paso Agregado", "", "success");
+                      resABMRecipe("A", true);
                     } else {
-                      swal.fire("Insercion Rechazada", "", "info");
+                      resABMRecipe("A", false);
                     }
                   });
               } else if (res.isDenied) {
-                swal.fire("Insercion Rechazada", "", "info");
+                resABMRecipe("A", false);
               }
             });
         });
@@ -553,7 +627,7 @@ function getPasos(id, objDestino, bModDel) {
         btnSave.addEventListener("click", () => {
           swal
             .fire({
-              icon: "confirm",
+              icon: "question",
               title: `Confirme Modificacion`,
               text: `¿Desea Modificar el Paso Nro ${paso.id} ?`,
               showCloseButton: "true",
@@ -585,13 +659,13 @@ function getPasos(id, objDestino, bModDel) {
 
                       saveRecetario();
                       getPasos(id, objDestino, bModDel);
-                      swal.fire("Modificacion Realizada", "", "success");
+                      resABMRecipe("M", true);
                     } else {
-                      swal.fire("Modificacion Rechazada", "", "info");
+                      resABMRecipe("M", false);
                     }
                   });
               } else if (res.isDenied) {
-                swal.fire("Modificacion Rechazada", "", "info");
+                resABMRecipe("M", false);
               }
             });
         });
@@ -599,7 +673,7 @@ function getPasos(id, objDestino, bModDel) {
       btnDel.addEventListener("click", () => {
         swal
           .fire({
-            icon: "confirm",
+            icon: "question",
             title: `Confirme Eliminacion`,
             text: `¿Desea Eliminar el Paso ${paso.id} ?`,
             showCloseButton: "true",
@@ -627,13 +701,13 @@ function getPasos(id, objDestino, bModDel) {
                     Recetario[id].delPaso(paso.id);
                     objDestino.innerHTML = "";
                     getPasos(id, objDestino, bModDel);
-                    swal.fire("Modificacion Realizada", "", "success");
+                    resABMRecipe("B", true);
                   } else {
-                    swal.fire("Modificacion Rechazada", "", "info");
+                    resABMRecipe("B", false);
                   }
                 });
             } else if (res.isDenied) {
-              swal.fire("Modificacion Rechazada", "", "info");
+              resABMRecipe("B", false);
             }
           });
       });
