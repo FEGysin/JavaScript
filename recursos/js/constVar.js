@@ -29,6 +29,7 @@ const tReconf = swal.mixin({
     tReconf.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
 const swConf = swal.mixin({
   showCloseButton: "true",
   showDenyButton: "true",
@@ -44,5 +45,3 @@ const swConf = swal.mixin({
     swConf.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
-const swIngrediente = swal.mixin({});
-const swPaso = swal.mixin({});

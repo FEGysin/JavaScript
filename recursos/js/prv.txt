@@ -1,16 +1,16 @@
 Swal.fire({
-  title: 'Login Form',
-  html: `<input type="text" id="login" class="swal2-input" placeholder="Username">
-  <input type="password" id="password" class="swal2-input" placeholder="Password">`,
-  confirmButtonText: 'Sign in',
+  title: 'Agregar Ingrediente',
+  html: `<input type="text" id="txtIngrediente" class="swal2-input" placeholder="Nombre">
+  <input type="password" id="txtIngCant" class="swal2-input" placeholder="Cantidad">`,
+  confirmButtonText: 'Agregar',
   focusConfirm: false,
   preConfirm: () => {
-    const login = Swal.getPopup().querySelector('#login').value
-    const password = Swal.getPopup().querySelector('#password').value
-    if (!login || !password) {
-      Swal.showValidationMessage(`Please enter login and password`)
+    const nwProd = Swal.getPopup().querySelector('#txtIngrediente').value
+    const nwProdCant = Swal.getPopup().querySelector('#txtIngCant').value
+    if (!nwProd || !nwProdCant) {
+      Swal.showValidationMessage(`No se Ingresaron Datos`)
     }
-    return { login: login, password: password }
+    return { Producto: nwProd, Canti: nwProdCant }
   }
 }).then((result) => {
   Swal.fire(`

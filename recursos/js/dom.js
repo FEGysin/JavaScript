@@ -47,6 +47,8 @@ function domRecBtn(recetas) {
     clearCard();
     getIngredientes(recetas.id - 1, recCardIngredientes, true);
     getPasos(recetas.id - 1, recCardPasos, true);
+    domAddBtnNwIng(recetas.id - 1);
+    domAddBtnNwPaso(recetas.id - 1);
   });
 
   let btnDel = document.getElementById(`btnDelRec${recetas.id}`);
@@ -61,14 +63,14 @@ function domRecBtn(recetas) {
         if (res.isConfirmed) {
           tReconf
             .fire({
-              icon: "alert",
+              icon: "warning",
               text: "¿Realmente desea Eliminar?",
             })
             .then((res) => {
               if (res.isConfirmed) {
                 delReceta(recetas.id - 1);
                 saveRecetario();
-                getRecetario();
+                actuListRecetario();
                 resABMRecipe("B", true);
               } else {
                 resABMRecipe("B", false);
@@ -81,6 +83,28 @@ function domRecBtn(recetas) {
   });
   recetario.appendChild(nwRecetaItem);
 }
+function domAddBtnNwIng(id) {
+  let btnNwIng = document.createElement("div");
+  btnNwIng.innerHTML = `  <button id="btnNwIng" title="Agrega un Nuevo Ingrediente" class="btn btn-success">
+  <i class="bi bi-plus-circle"> Agregar un Ingrediente</i>
+</button>`;
+  btnNwIng.addEventListener("click", () => {
+    addNwIng(id);
+  });
+  recCardIngredientes.appendChild(btnNwIng);
+}
+
+function domAddBtnNwPaso(id) {
+  let btnNwPaso = document.createElement("div");
+  btnNwPaso.innerHTML = `  <button id="btnNwPaso" title="Agrega un Nuevo Paso de Preparacion" class="btn btn-success">
+<i class="bi bi-plus-circle"> Agregar un Nuevo Paso</i>
+</button>`;
+  btnNwPaso.addEventListener("click", () => {
+    addNwPaso(id);
+  });
+  recCardPasos.appendChild(btnNwPaso);
+}
+
 function domAddIng(id, objDestino, ingrediente, bModDel) {
   let nwIngredItem = document.createElement("a");
   if (bModDel == false) {
@@ -125,25 +149,12 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
   let btnDel = document.getElementById(`btnDelIng${ingrediente.id}`);
 
   btnAdd.addEventListener("click", () => {
-    //     modalAdd.innerHTML = "";
-    //     lblModalAdd.innerText = "Modificacion Ingrediente";
-
-    //     let ingModal = document.createElement(`div`);
-    //     ingModal.innerHTML = `
-    //       <div class="d-flex row justify-content-around">
-    //         <input class="col-5" type="text" name="" id="txtIngrediente" value="">
-    //         <input class="col-3" type="text" name="" id="txtIngCant" value="">
-    //       </div>`;
-    //     modalAdd.appendChild(ingModal);
-
-    //     btnSave.addEventListener("click", () => {
-    //       let nwIngrediente = document.getElementById("txtIngrediente");
-    //       let nwCant = document.getElementById("txtIngCant");
     Swal.fire({
       title: "Agregar Ingrediente",
       html: `<input type="text" id="txtIngrediente" class="swal2-input" placeholder="Nombre">
         <input type="text" id="txtIngCant" class="swal2-input" placeholder="Cantidad">`,
       confirmButtonText: "Agregar",
+      showCancelButton: true,
       focusConfirm: false,
       preConfirm: () => {
         const nwProd = Swal.getPopup().querySelector("#txtIngrediente").value;
@@ -154,39 +165,41 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
         return { Producto: nwProd, Cant: nwProdCant };
       },
     }).then((result) => {
-      tConfirm
-        .fire({
-          icon: "question",
-          title: `Confirme Nuevo Ingrediente`,
-          text: `¿Desea Insertar el Ingrediente ${result.value.Producto} por ${result.value.Cant} ?`,
-        })
-        .then((res) => {
-          if (res.isConfirmed) {
-            tReconf
-              .fire({
-                icon: "warning",
-                text: "¿Realmente desea Insertar?",
-              })
-              .then((res) => {
-                if (res.isConfirmed) {
-                  Recetario[id].addIngrediente(
-                    ingrediente.id,
-                    result.value.Producto,
-                    result.value.Cant
-                    // nwIngrediente.value,
-                    // nwCant.value
-                  );
-                  saveRecetario();
-                  getIngredientes(id, objDestino, bModDel);
-                  resABMRecipe("A", true);
-                } else {
-                  resABMRecipe("A", false);
-                }
-              });
-          } else if (res.isDenied) {
-            resABMRecipe("A", false);
-          }
-        });
+      if (result.isConfirmed) {
+        tConfirm
+          .fire({
+            icon: "question",
+            title: `Confirme Nuevo Ingrediente`,
+            text: `¿Desea Insertar el Ingrediente ${result.value.Producto} por ${result.value.Cant} ?`,
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              tReconf
+                .fire({
+                  icon: "warning",
+                  text: "¿Realmente desea Insertar?",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].addIngrediente(
+                      ingrediente.id,
+                      result.value.Producto,
+                      result.value.Cant
+                    );
+                    saveRecetario();
+                    getIngredientes(id, objDestino, bModDel);
+                    resABMRecipe("A", true);
+                  } else {
+                    resABMRecipe("A", false);
+                  }
+                });
+            } else if (res.isDenied) {
+              resABMRecipe("A", false);
+            }
+          });
+      } else {
+        resABMRecipe("A", false);
+      }
     });
   });
   btnMod.addEventListener("click", () => {
@@ -196,41 +209,46 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
       inputValue: ingrediente.cantidad,
       inputAttributes: {
         "aria-label": "Type your message here",
+        showCancelButton: true,
       },
       //showCancelButton: false,
     }).then((result) => {
-      tConfirm
-        .fire({
-          icon: "question",
-          title: `Confirme Modificacion`,
-          text: `¿Desea Modificar la Cantidad de ${ingrediente.producto} ?`,
-        })
+      if (result.isConfirmed) {
+        tConfirm
+          .fire({
+            icon: "question",
+            title: `Confirme Modificacion`,
+            text: `¿Desea Modificar la Cantidad de ${ingrediente.producto} ?`,
+          })
 
-        .then((res) => {
-          if (res.isConfirmed) {
-            tReconf
-              .fire({
-                icon: "question",
-                text: "¿Realmente desea Modificar?",
-              })
-              .then((res) => {
-                if (res.isConfirmed) {
-                  Recetario[id].modIngrediente(
-                    ingrediente.id,
-                    result.value
-                    //document.getElementById("txtIngCant").value
-                  );
-                  saveRecetario();
-                  getIngredientes(id, objDestino, bModDel);
-                  swal.fire("Modificacion Realizada", "", "success");
-                } else {
-                  resABMRecipe("M", false);
-                }
-              });
-          } else if (res.isDenied) {
-            resABMRecipe("M", false);
-          }
-        });
+          .then((res) => {
+            if (res.isConfirmed) {
+              tReconf
+                .fire({
+                  icon: "question",
+                  text: "¿Realmente desea Modificar?",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].modIngrediente(
+                      ingrediente.id,
+                      result.value
+                      //document.getElementById("txtIngCant").value
+                    );
+                    saveRecetario();
+                    getIngredientes(id, objDestino, bModDel);
+                    swal.fire("Modificacion Realizada", "", "success");
+                  } else {
+                    resABMRecipe("M", false);
+                  }
+                });
+            } else if (res.isDenied) {
+              resABMRecipe("M", false);
+            }
+          });
+      } else {
+        resABMRecipe("M", false);
+      }
     });
   });
   btnDel.addEventListener("click", () => {
@@ -261,11 +279,14 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
             });
         } else if (res.isDenied) {
           resABMRecipe("B", false);
+        } else {
+          resABMRecipe("B", false);
         }
       });
   });
   objDestino.appendChild(nwIngredItem);
 }
+
 function domAddPaso(id, objDestino, paso, bModDel) {
   let nwPasoItem = document.createElement("a");
   if (bModDel == false) {
@@ -291,60 +312,57 @@ function domAddPaso(id, objDestino, paso, bModDel) {
     domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel);
   }
 }
+
 function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
   let btnAdd = document.getElementById(`btnAddPas${paso.id}`);
   let btnMod = document.getElementById(`btnModPas${paso.id}`);
   let btnDel = document.getElementById(`btnDelPas${paso.id}`);
   btnAdd.addEventListener("click", () => {
+    //ddNwPaso()
     Swal.fire({
       input: "textarea",
       inputLabel: "Insertar un Paso",
-      inputPlaceholder: "Type your message here...",
+      inputPlaceholder: "Agregue el detalle aqui...",
       inputAttributes: {
         "aria-label": "Type your message here",
       },
       showCancelButton: true,
     }).then((result) => {
-      tConfirm
-        .fire({
-          icon: "question",
-          title: `Confirme Nuevo Paso`,
-          text: `¿Desea Insertar un Paso Previo al Nro ${paso.id} ?`,
-        })
-        .then((res) => {
-          if (res.isConfirmed) {
-            tReconf
-              .fire({
-                icon: "question",
-                text: "¿Realmente desea insertar el Paso?",
-              })
-              .then((res) => {
-                if (res.isConfirmed) {
-                  Recetario[id].addPaso(paso.id, result.value);
-                  saveRecetario();
-                  getPasos(id, objDestino, bModDel);
+      if (result.isConfirmed) {
+        tConfirm
+          .fire({
+            icon: "question",
+            title: `Confirme Nuevo Paso`,
+            text: `¿Desea Insertar un Paso Previo al Nro ${paso.id} ?`,
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              tReconf
+                .fire({
+                  icon: "question",
+                  text: "¿Realmente desea insertar el Paso?",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].addPaso(paso.id, result.value);
+                    saveRecetario();
+                    getPasos(id, objDestino, bModDel);
 
-                  resABMRecipe("A", true);
-                } else {
-                  resABMRecipe("A", false);
-                }
-              });
-          } else if (res.isDenied) {
-            resABMRecipe("A", false);
-          }
-        });
+                    resABMRecipe("A", true);
+                  } else {
+                    resABMRecipe("A", false);
+                  }
+                });
+            } else if (res.isDenied) {
+              resABMRecipe("A", false);
+            }
+          });
+      } else {
+        resABMRecipe("A", false);
+      }
     });
   });
   btnMod.addEventListener("click", () => {
-    // lblModalAdd.innerText = "Modificacion de Paso";
-    // modalAdd.innerHTML = "";
-    // let ingModal = document.createElement(`div`);
-    // ingModal.innerHTML = `
-    //     <div class="d-flex row justify-content-around">
-    //       <input class="col-10" type="text" name="" id="txtDetPaso" value="${paso.detPaso}">
-    //     </div>`;
-    // modalAdd.appendChild(ingModal);
-    // btnSave.addEventListener("click", () => {
     Swal.fire({
       input: "textarea",
       inputLabel: `Modificar Paso N° ${paso.id}`,
@@ -354,37 +372,37 @@ function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
       },
       showCancelButton: true,
     }).then((result) => {
-      tConfirm
-        .fire({
-          icon: "question",
-          title: `Confirme Modificacion`,
-          text: `¿Desea Modificar el Paso Nro ${paso.id} ?`,
-        })
-        .then((res) => {
-          if (res.isConfirmed) {
-            tReconf
-              .fire({
-                icon: "question",
-                text: "¿Realmente desea Modificar?",
-              })
-              .then((res) => {
-                if (res.isConfirmed) {
-                  Recetario[id].modPaso(
-                    paso.id,
-                    result.value
-                    // document.getElementById("txtDetPaso").value
-                  );
-                  saveRecetario();
-                  getPasos(id, objDestino, bModDel);
-                  resABMRecipe("M", true);
-                } else {
-                  resABMRecipe("M", false);
-                }
-              });
-          } else if (res.isDenied) {
-            resABMRecipe("M", false);
-          }
-        });
+      if (result.isConfirmed) {
+        tConfirm
+          .fire({
+            icon: "question",
+            title: `Confirme Modificacion`,
+            text: `¿Desea Modificar el Paso Nro ${paso.id} ?`,
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              tReconf
+                .fire({
+                  icon: "question",
+                  text: "¿Realmente desea Modificar?",
+                })
+                .then((res) => {
+                  if (res.isConfirmed) {
+                    Recetario[id].modPaso(paso.id, result.value);
+                    saveRecetario();
+                    getPasos(id, objDestino, bModDel);
+                    resABMRecipe("M", true);
+                  } else {
+                    resABMRecipe("M", false);
+                  }
+                });
+            } else if (res.isDenied) {
+              resABMRecipe("M", false);
+            }
+          });
+      } else {
+        resABMRecipe("M", false);
+      }
     });
   });
   btnDel.addEventListener("click", () => {
@@ -400,7 +418,7 @@ function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
             .fire({
               icon: "warning",
               iconColor: "#ff0000",
-              text: "¿Ralmente desea Eliminar?",
+              text: "¿Realmente desea Eliminar?",
             })
             .then((res) => {
               if (res.isConfirmed) {
@@ -419,10 +437,7 @@ function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
   });
   objDestino.appendChild(nwPasoItem);
 }
+
 btnRecetaAdd.addEventListener("click", () => {
-  // modalAdd.innerHTML = "";
-  //   modalAdd.appendChild();
-  let nwReceta = new Receta(Recetario.length + 1, "", [], []);
-  Recetario.push(nwReceta);
-  domReceta(nwReceta);
+  addReceta();
 });
