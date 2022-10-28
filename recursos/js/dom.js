@@ -150,12 +150,14 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
 
   btnAdd.addEventListener("click", () => {
     Swal.fire({
+      position: "top",
       title: "Agregar Ingrediente",
-      html: `<input type="text" id="txtIngrediente" class="swal2-input" placeholder="Nombre">
-        <input type="text" id="txtIngCant" class="swal2-input" placeholder="Cantidad">`,
+      html: `<input type="text" id="txtIngrediente" class="swal2-input" placeholder="Ingrese Ingrediente...">
+        <input type="text" id="txtIngCant" class="swal2-input" placeholder="Ingrese Cantidad...">`,
       confirmButtonText: "Agregar",
       showCancelButton: true,
       focusConfirm: false,
+
       preConfirm: () => {
         const nwProd = Swal.getPopup().querySelector("#txtIngrediente").value;
         const nwProdCant = Swal.getPopup().querySelector("#txtIngCant").value;
@@ -205,13 +207,13 @@ function domIngAddBtn(id, objDestino, nwIngredItem, ingrediente, bModDel) {
   btnMod.addEventListener("click", () => {
     Swal.fire({
       input: "text",
+      position: "top",
       inputLabel: `Modificar Cantidad de ${ingrediente.producto}`,
       inputValue: ingrediente.cantidad,
       inputAttributes: {
         "aria-label": "Type your message here",
         showCancelButton: true,
       },
-      //showCancelButton: false,
     }).then((result) => {
       if (result.isConfirmed) {
         tConfirm
@@ -320,6 +322,8 @@ function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
   btnAdd.addEventListener("click", () => {
     //ddNwPaso()
     Swal.fire({
+      position: "bottom-start",
+      width: "52em",
       input: "textarea",
       inputLabel: "Insertar un Paso",
       inputPlaceholder: "Agregue el detalle aqui...",
@@ -364,6 +368,8 @@ function domAddPasoBtn(id, objDestino, nwPasoItem, paso, bModDel) {
   });
   btnMod.addEventListener("click", () => {
     Swal.fire({
+      position: "bottom-start",
+      width: "52em",
       input: "textarea",
       inputLabel: `Modificar Paso N° ${paso.id}`,
       inputValue: paso.detPaso,

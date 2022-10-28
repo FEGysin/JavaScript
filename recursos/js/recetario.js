@@ -100,7 +100,7 @@ function addReceta() {
     input: "text",
     inputLabel: `Agregar Nueva Receta`,
     inputPlaceholder: "Introduzca Nombre de Receta...",
-    //position: "",
+    position: "bottom-end",
     inputAttributes: {
       "aria-label": "Type your message here",
     },

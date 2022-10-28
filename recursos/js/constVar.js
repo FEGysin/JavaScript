@@ -17,6 +17,7 @@ const tConfirm = Swal.mixin({
   },
 });
 const tReconf = swal.mixin({
+  toast: true,
   showDenyButton: "true",
   confirmButtonText: '<i class="fa fa-thumbs-up"></i> Si',
   confirmButtonAriaLabel: "Thumbs up, Si",
