@@ -13,7 +13,7 @@ function domReceta(recetas) {
         <a id=rec"${recetas.id}"
           class="list-group-item col-11  py-1 lh-sm mt-2 p-0">
           <div class="m-1 row d-flex justify-content-center">
-            <img class="m-2" src="../img/comida.jpg" alt="imgComidas"/>
+            <img class="m-2" src="./recursos/img/comida.jpg" alt="imgComidas"/>
           </div>
           <div
             class="m-1 w-80 text-center">
